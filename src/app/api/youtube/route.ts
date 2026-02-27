@@ -42,7 +42,8 @@ export async function POST(request: NextRequest) {
             return NextResponse.json({
                 videoId,
                 metadata,
-                hasTranscript: !!transcript
+                hasTranscript: !!transcript,
+                transcript
             });
         } catch (validationError: any) {
             return NextResponse.json({ error: validationError.message }, { status: 422 });
