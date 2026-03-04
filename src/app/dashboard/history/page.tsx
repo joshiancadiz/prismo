@@ -11,12 +11,12 @@ const historyRecords = [
     { id: '5', name: 'Project_Proposal_Draft.docx', date: '2024-02-18', status: 'Completed', type: 'DOCX' },
 ];
 
-export default function HistoryPage() {
+export default function HistoryPage({ params }: { params: Promise<{}> }) {
     return (
         <div className="bg-white rounded-[10px] flex-1 p-8 overflow-y-auto h-full">
             <div className="space-y-8">
                 <div>
-                    <h1 className="text-3xl font-bold text-[#101010]">Analysis History</h1>
+                    <h1 className="text-3xl font-bold text-[#101010]">History</h1>
                     <p className="text-gray-500 mt-2">View and manage your previous script extractions and reports.</p>
                 </div>
 
@@ -52,8 +52,8 @@ export default function HistoryPage() {
                                     </td>
                                     <td className="px-6 py-4">
                                         <span className={`inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium ${record.status === 'Completed'
-                                                ? 'bg-green-100 text-green-800'
-                                                : 'bg-red-100 text-red-800'
+                                            ? 'bg-green-100 text-green-800'
+                                            : 'bg-red-100 text-red-800'
                                             }`}>
                                             {record.status === 'Completed' && <ShieldCheck className="w-3 h-3 mr-1" />}
                                             {record.status}

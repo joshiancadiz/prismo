@@ -10,13 +10,13 @@ const stats = [
     { name: 'History Records', value: '890', icon: History, color: 'text-orange-500' },
 ];
 
-export default function DashboardPage() {
+export default function DashboardPage({ params }: { params?: Promise<any> } = {}) {
     return (
         <div className="bg-white rounded-[10px] flex-1 p-8 overflow-y-auto h-full">
             <div className="space-y-8">
                 <div>
                     <h1 className="text-3xl font-bold text-[#101010]">Dashboard Overview</h1>
-                    <p className="text-gray-500 mt-2">Welcome back to PRISMO. Here's what's happening today.</p>
+                    <p className="text-gray-500 mt-2">Welcome back to PRISMO. Here&apos;s what&apos;s happening today.</p>
                 </div>
 
                 <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">

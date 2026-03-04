@@ -2,13 +2,13 @@
 
 import React, { useState } from 'react';
 import { Play, Info, CheckCircle2, AlertCircle, Link as LinkIcon, Instagram, Youtube, Clapperboard, Copy, Clock, Check } from 'lucide-react';
-import { extractYoutubeId } from '@/app/lib/youtube/parse';
+// import { extractYoutubeId } from '@/app/lib/youtube/parse';
 
-export default function ScriptExtractPage() {
+export default function ScriptExtractPage({ params }: { params: Promise<{}> }) {
     const [videoUrl, setVideoUrl] = useState('');
     const [error, setError] = useState<string | null>(null);
     const [isLoading, setIsLoading] = useState(false);
-    const [videoData, setVideoData] = useState<any>(null);
+    const [videoData, setVideoData] = useState<any | null>(null);
     const [showTimestamps, setShowTimestamps] = useState(true);
     const [copied, setCopied] = useState(false);
 
@@ -53,7 +53,7 @@ export default function ScriptExtractPage() {
     const handleCopy = () => {
         if (!videoData?.transcript) return;
 
-        const textToCopy = videoData.transcript.map((item: any) =>
+        const textToCopy = videoData.transcript.map((item: { timestamp: string; text: string }) =>
             showTimestamps ? `[${item.timestamp}] ${item.text}` : item.text
         ).join('\n');
 
@@ -68,7 +68,7 @@ export default function ScriptExtractPage() {
             <div className="space-y-8">
                 <div className="flex justify-between items-start">
                     <div>
-                        <h1 className="text-3xl font-bold text-[#101010]">Youtube Script Extractor</h1>
+                        <h1 className="text-3xl font-bold text-[#101010]">Script Extractor</h1>
                         <p className="text-gray-500 mt-2">Extract precise text, captions, and insights from Youtube videos and shorts.</p>
                     </div>
                     <div className="flex gap-2">
@@ -169,7 +169,7 @@ export default function ScriptExtractPage() {
                                 </div>
                             </div>
                             <div className="overflow-y-auto space-y-4 pr-4 custom-scrollbar flex-1 pb-4">
-                                {videoData.transcript.map((item: any, i: number) => (
+                                {videoData.transcript.map((item: { timestamp: string; text: string }, i: number) => (
                                     <div key={i} className="flex gap-4 items-start group">
                                         {showTimestamps && (
                                             <span className="text-[10px] font-mono text-blue-600 bg-blue-50/80 px-2 py-1 rounded-[6px] w-20 shrink-0 text-center border border-blue-100/50">
