@@ -1,7 +1,7 @@
 "use client";
 
 import React, { useState } from 'react';
-import { Play, Info, CheckCircle2, AlertCircle, Link as LinkIcon, Instagram, Youtube, Clapperboard, Copy, Clock, Check } from 'lucide-react';
+import { Play, Info, CheckCircle2, AlertCircle, Link as LinkIcon, Instagram, Youtube, Clapperboard, Copy, Clock, Check, X } from 'lucide-react';
 // import { extractYoutubeId } from '@/app/lib/youtube/parse';
 
 export default function ScriptExtractPage({ params }: { params: Promise<{}> }) {
@@ -116,6 +116,16 @@ export default function ScriptExtractPage({ params }: { params: Promise<{}> }) {
                                         <Play className="w-4 h-4" />
                                     )}
                                     {isLoading ? 'Processing...' : 'Process'}
+                                </button>
+                                <button
+                                    onClick={() => {
+                                        setVideoUrl('');
+                                        setError(null);
+                                    }}
+                                    className="px-4 py-2 bg-white border border-gray-200 text-gray-600 text-sm font-medium rounded-[10px] hover:bg-gray-50 transition-colors flex items-center gap-2 cursor-pointer"
+                                    title="Clear Input"
+                                >
+                                    Clear
                                 </button>
                             </div>
                             <p className="text-xs text-gray-400 mt-3">Supports Youtube Vidoes, YouTube Shorts, and Tiktok Reels.</p>
