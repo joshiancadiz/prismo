@@ -78,11 +78,46 @@ export async function fetchTranscript(
             }
 
             if (timestamp && textLines.length > 0) {
-                const text = textLines.join(' ');
-                // Simple deduplication for rolling captions
-                if (transcript.length === 0 || transcript[transcript.length - 1].text !== text) {
-                    transcript.push({ timestamp, text });
+                const text = textLines.join(' ').replace(/\s+/g, ' ').trim();
+                
+                if (transcript.length > 0) {
+                    const lastIdx = transcript.length - 1;
+                    const lastText = transcript[lastIdx].text;
+
+                    if (lastText === text) {
+                        continue;
+                    }
+
+                    // For word-by-word rolling captions where sentence builds up
+                    if (text.startsWith(lastText)) {
+                        transcript[lastIdx].text = text;
+                        continue;
+                    }
+
+                    // For line-by-line scrolling, find overlapping words
+                    const lastWords = lastText.split(' ');
+                    const currentWords = text.split(' ');
+                    
+                    let overlapWords = 0;
+                    const maxOverlap = Math.min(lastWords.length, currentWords.length);
+                    
+                    for (let i = maxOverlap; i > 0; i--) {
+                        if (lastWords.slice(-i).join(' ') === currentWords.slice(0, i).join(' ')) {
+                            overlapWords = i;
+                            break;
+                        }
+                    }
+
+                    if (overlapWords > 0) {
+                        const remainingWords = currentWords.slice(overlapWords);
+                        if (remainingWords.length > 0) {
+                            transcript.push({ timestamp, text: remainingWords.join(' ') });
+                        }
+                        continue;
+                    }
                 }
+                
+                transcript.push({ timestamp, text });
             }
         }
 

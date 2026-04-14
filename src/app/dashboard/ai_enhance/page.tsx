@@ -10,7 +10,7 @@ export default function AIEnhancePage() {
 
     const handleEnhance = async () => {
         if (!inputText.trim()) return;
-        
+
         setIsEnhancing(true);
         setResultText("");
 
@@ -56,7 +56,7 @@ export default function AIEnhancePage() {
                         <div className="w-10 h-10 rounded-[12px] bg-blue-500 flex items-center justify-center">
                             <Sparkles className="w-6 h-6 text-white" />
                         </div>
-                        <h1 className="text-3xl font-bold text-[#101010]">AI Enhance</h1>
+                        <h1 className="text-3xl font-bold text-[#101010]">Text Enhance</h1>
                     </div>
                     <p className="text-gray-500">Transform and refine your content with our intelligent enhancement engine.</p>
                 </div>
@@ -69,7 +69,7 @@ export default function AIEnhancePage() {
                                 Input Content
                                 <span className="text-[10px] font-normal text-gray-400">Enter text to enhance</span>
                             </label>
-                            <button 
+                            <button
                                 onClick={handleClear}
                                 className="text-gray-400 hover:text-red-500 transition-colors p-1"
                                 title="Clear Input"
@@ -88,11 +88,10 @@ export default function AIEnhancePage() {
                                 <button
                                     onClick={handleEnhance}
                                     disabled={!inputText.trim() || isEnhancing}
-                                    className={`flex items-center gap-2 px-6 py-3 rounded-full font-semibold text-sm transition-all ${
-                                        !inputText.trim() || isEnhancing
+                                    className={`flex items-center gap-2 px-6 py-3 rounded-full font-semibold text-sm transition-all ${!inputText.trim() || isEnhancing
                                             ? 'bg-gray-100 text-gray-400 cursor-not-allowed'
                                             : 'bg-[#101010] text-white hover:bg-blue-600 shadow-lg shadow-blue-500/20 hover:scale-105 active:scale-95'
-                                    }`}
+                                        }`}
                                 >
                                     {isEnhancing ? (
                                         <>
@@ -117,7 +116,7 @@ export default function AIEnhancePage() {
                                 <span className="text-[10px] font-normal text-gray-400">Refined output</span>
                             </label>
                             {resultText && (
-                                <button 
+                                <button
                                     onClick={handleCopy}
                                     className="text-gray-400 hover:text-blue-500 transition-colors p-1 flex items-center gap-1 text-[10px] font-bold uppercase tracking-wider"
                                 >
@@ -126,12 +125,11 @@ export default function AIEnhancePage() {
                             )}
                         </div>
                         <div className="relative flex-1">
-                            <div 
-                                className={`w-full h-full p-6 border border-dashed rounded-[20px] overflow-y-auto transition-all ${
-                                    resultText 
-                                        ? 'bg-gradient-to-br from-blue-50/50 to-purple-50/50 border-blue-100 text-[#101010]' 
+                            <div
+                                className={`w-full h-full p-6 border border-dashed rounded-[20px] overflow-y-auto transition-all ${resultText
+                                        ? 'bg-gradient-to-br from-blue-50/50 to-purple-50/50 border-blue-100 text-[#101010]'
                                         : 'bg-gray-50 border-gray-200 text-gray-400 flex items-center justify-center'
-                                }`}
+                                    }`}
                             >
                                 {resultText ? (
                                     <div className="whitespace-pre-wrap leading-relaxed animate-in fade-in duration-500">

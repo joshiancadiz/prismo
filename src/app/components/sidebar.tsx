@@ -3,7 +3,7 @@
 import React from 'react';
 import Link from 'next/link';
 import { usePathname } from 'next/navigation';
-import { TrendingUp, LayoutDashboard, FileText, History, Sparkles, ChevronDown, ChevronRight } from 'lucide-react';
+import { TrendingUp, LayoutDashboard, FileText, History, Sparkles, ChevronDown, ChevronRight, Languages } from 'lucide-react';
 
 const navItems = [
     { name: 'Dashboard', href: '/dashboard', icon: LayoutDashboard },
@@ -13,7 +13,9 @@ const navItems = [
         icon: Sparkles,
         isDropdown: true,
         children: [
-            { name: 'AI Enhance', href: '/dashboard/ai_enhance', icon: Sparkles },
+            { name: 'Text Enhance', href: '/dashboard/ai_enhance', icon: Sparkles },
+            { name: 'Paraphraser', href: '/dashboard/ai_paraphrase', icon: Sparkles },
+            { name: 'Translate', href: '/dashboard/ai_translate', icon: Languages },
         ]
     },
     { name: 'History', href: '/dashboard/history', icon: History },
