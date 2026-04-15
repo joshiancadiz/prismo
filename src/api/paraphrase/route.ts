@@ -1,9 +1,9 @@
 import { NextRequest, NextResponse } from 'next/server';
-import { translateText } from '@/app/lib/ai_tools/translate';
+import { paraphraseText } from '@/lib/ai_tools/paraphrase';
 
 export async function POST(request: NextRequest) {
     try {
-        const { text, fromLanguage, toLanguage } = await request.json();
+        const { text, tone } = await request.json();
 
         if (!text || typeof text !== 'string' || !text.trim()) {
             return NextResponse.json(
@@ -12,20 +12,20 @@ export async function POST(request: NextRequest) {
             );
         }
 
-        if (!toLanguage || typeof toLanguage !== 'string') {
+        if (!tone || typeof tone !== 'string') {
             return NextResponse.json(
-                { error: 'Target language is required' },
+                { error: 'Tone is required' },
                 { status: 400 }
             );
         }
 
-        const translatedText = await translateText(text, fromLanguage || 'auto', toLanguage);
+        const paraphrasedText = await paraphraseText(text, tone);
 
-        return NextResponse.json({ translatedText });
+        return NextResponse.json({ paraphrasedText });
     } catch (error) {
-        console.error('Translate error:', error);
+        console.error('Paraphrase error:', error);
         return NextResponse.json(
-            { error: 'Failed to translate text. Please try again.' },
+            { error: 'Failed to paraphrase text. Please try again.' },
             { status: 500 }
         );
     }

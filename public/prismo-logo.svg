@@ -1,0 +1,71 @@
+<svg width="434" height="375" viewBox="0 0 434 375" fill="none"
+     xmlns="http://www.w3.org/2000/svg">
+
+  <path d="M394.042 352.5H38.9712L216.506 44.999L394.042 352.5Z"
+        stroke="url(#prismGradient)"
+        stroke-width="45"/>
+
+  <defs>
+    <linearGradient id="prismGradient"
+      x1="0%" y1="0%"
+      x2="100%" y2="100%"
+      gradientUnits="userSpaceOnUse">
+
+      <!-- SAME hue path, shifted in time -->
+
+      <stop offset="0%">
+        <animate attributeName="stop-color"
+          values="
+            #ff0000;
+            #ff7f00;
+            #ffff00;
+            #00ff00;
+            #00ffff;
+            #0000ff;
+            #8b00ff;
+            #ff0000"
+          dur="12s"
+          repeatCount="indefinite"/>
+      </stop>
+
+      <stop offset="50%">
+        <animate attributeName="stop-color"
+          values="
+            #ff7f00;
+            #ffff00;
+            #00ff00;
+            #00ffff;
+            #0000ff;
+            #8b00ff;
+            #ff0000;
+            #ff7f00"
+          dur="12s"
+          repeatCount="indefinite"/>
+      </stop>
+
+      <stop offset="100%">
+        <animate attributeName="stop-color"
+          values="
+            #ffff00;
+            #00ff00;
+            #00ffff;
+            #0000ff;
+            #8b00ff;
+            #ff0000;
+            #ff7f00;
+            #ffff00"
+          dur="12s"
+          repeatCount="indefinite"/>
+      </stop>
+
+      <!-- Very subtle motion (optional but safe) -->
+      <animate attributeName="gradientTransform"
+        type="rotate"
+        from="0 0.5 0.5"
+        to="360 0.5 0.5"
+        dur="40s"
+        repeatCount="indefinite"/>
+
+    </linearGradient>
+  </defs>
+</svg>

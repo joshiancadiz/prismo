@@ -1,5 +1,5 @@
 import { NextRequest, NextResponse } from 'next/server';
-import { enhanceTranscript } from '@/app/lib/ai_tools/enhance';
+import { enhanceTranscript } from '@/lib/ai_tools/enhance';
 
 export async function POST(request: NextRequest) {
     try {

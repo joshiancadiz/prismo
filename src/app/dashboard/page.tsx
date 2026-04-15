@@ -12,25 +12,38 @@ const stats = [
 
 export default function DashboardPage({ params }: { params?: Promise<any> } = {}) {
     return (
-        <div className="bg-white rounded-[10px] flex-1 p-8 overflow-y-auto h-full">
+        <div className="flex-1 p-8 overflow-y-auto h-full">
             <div className="space-y-8">
-                <div>
-                    <h1 className="text-3xl font-bold text-[#101010]">Dashboard Overview</h1>
-                    <p className="text-gray-500 mt-2">Welcome back to PRISMO. Here&apos;s what&apos;s happening today.</p>
+                <div className="flex items-center justify-between">
+                    <div>
+                        <h1 className="text-3xl font-bold text-white">Dashboard Overview</h1>
+                        <p className="text-gray-400 mt-2">Welcome back to Prismo AI. Here&apos;s what&apos;s happening today.</p>
+                    </div>
+                    <button
+                        onClick={async () => {
+                            const { createClient } = await import('@/utils/supabase/client');
+                            const supabase = createClient();
+                            await supabase.auth.signOut();
+                            window.location.href = '/login';
+                        }}
+                        className="px-4 py-2 bg-red-500/10 text-red-500 font-medium rounded-lg hover:bg-red-500/20 transition-colors border border-red-500/20 cursor-pointer"
+                    >
+                        Sign Out
+                    </button>
                 </div>
-
+ 
                 <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
                     {stats.map((stat) => (
-                        <div key={stat.name} className="p-6 bg-[#f9f9f9] rounded-[15px] border border-gray-100 hover:shadow-sm transition-shadow">
+                        <div key={stat.name} className="p-6 bg-white/5 rounded-[15px] border border-white/5 hover:border-white/10 hover:shadow-sm transition-all group">
                             <div className="flex items-center justify-between mb-4">
-                                <stat.icon className={`w-8 h-8 ${stat.color}`} />
-                                <span className="text-2xl font-bold text-[#101010]">{stat.value}</span>
+                                <stat.icon className={`w-8 h-8 ${stat.color} transition-transform group-hover:scale-110`} />
+                                <span className="text-2xl font-bold text-white">{stat.value}</span>
                             </div>
-                            <h3 className="text-sm font-medium text-gray-600">{stat.name}</h3>
+                            <h3 className="text-sm font-medium text-gray-400">{stat.name}</h3>
                         </div>
                     ))}
                 </div>
-
+ 
             </div>
         </div>
     );

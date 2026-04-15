@@ -1,7 +1,8 @@
 import type { Metadata } from "next";
 import { Geist, Geist_Mono } from "next/font/google";
 import "./globals.css";
-import Sidebar from "./components/sidebar";
+import Sidebar from "../components/sidebar";
+import { createClient } from "@/utils/supabase/server";
 
 const geistSans = Geist({
   variable: "--font-geist-sans",
@@ -18,22 +19,25 @@ export const metadata: Metadata = {
   description: "Advanced Content Analysis Platform",
 };
 
-export default function RootLayout({
+export default async function RootLayout({
   children,
-  params,
 }: Readonly<{
   children: React.ReactNode;
-  params: Promise<{}>;
 }>) {
+  const supabase = await createClient();
+  const { data: { user } } = await supabase.auth.getUser();
+
   return (
     <html lang="en">
       <body
-        className={`${geistSans.variable} ${geistMono.variable} antialiased bg-[#f5f5f5] text-[#101010] h-screen overflow-hidden`}
+        className={`${geistSans.variable} ${geistMono.variable} antialiased bg-[#08090D] text-white h-screen overflow-hidden`}
       >
-        <Sidebar />
-        <main className="pl-[calc(18%+20px)] pt-[10px] pr-[10px] pb-[10px] h-full flex flex-col">
-          {children}
-        </main>
+        <div className="flex h-screen w-screen overflow-hidden">
+          {user && <Sidebar />}
+          <main className="flex-1 flex flex-col overflow-hidden">
+            {children}
+          </main>
+        </div>
       </body>
     </html>
   );

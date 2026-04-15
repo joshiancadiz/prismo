@@ -1,8 +1,8 @@
 import { NextRequest, NextResponse } from 'next/server';
-import { extractYoutubeId } from '@/app/lib/youtube/parse';
-import { fetchYouTubeMetadata } from '@/app/lib/youtube/metadata';
-import { validateVideo } from '@/app/lib/youtube/validation';
-import { fetchTranscript } from '@/app/lib/youtube/transcript';
+import { extractYoutubeId } from '@/lib/youtube/parse';
+import { fetchYouTubeMetadata } from '@/lib/youtube/metadata';
+import { validateVideo } from '@/lib/youtube/validation';
+import { fetchTranscript } from '@/lib/youtube/transcript';
 
 export async function POST(request: NextRequest) {
     try {
@@ -32,9 +32,9 @@ export async function POST(request: NextRequest) {
             // Fetch and print the transcript
             const transcript = await fetchTranscript(videoId);
             if (transcript) {
-                console.log("--- TRANSCRIPT START ---");
-                console.log(transcript);
-                console.log("--- TRANSCRIPT END ---");
+                // console.log("--- TRANSCRIPT START ---");
+                // console.log(transcript);
+                // console.log("--- TRANSCRIPT END ---");
             } else {
                 console.log(`No transcript available for video: ${videoId}`);
             }
