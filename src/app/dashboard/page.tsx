@@ -19,17 +19,6 @@ export default function DashboardPage({ params }: { params?: Promise<any> } = {}
                         <h1 className="text-3xl font-bold text-white">Dashboard Overview</h1>
                         <p className="text-gray-400 mt-2">Welcome back to Prismo AI. Here&apos;s what&apos;s happening today.</p>
                     </div>
-                    <button
-                        onClick={async () => {
-                            const { createClient } = await import('@/utils/supabase/client');
-                            const supabase = createClient();
-                            await supabase.auth.signOut();
-                            window.location.href = '/login';
-                        }}
-                        className="px-4 py-2 bg-red-500/10 text-red-500 font-medium rounded-lg hover:bg-red-500/20 transition-colors border border-red-500/20 cursor-pointer"
-                    >
-                        Sign Out
-                    </button>
                 </div>
  
                 <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">

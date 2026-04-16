@@ -13,7 +13,8 @@ import {
     ChevronRight, 
     Languages,
     PanelLeftClose,
-    PanelLeft
+    PanelLeft,
+    Settings
 } from 'lucide-react';
 
 const navItems = [
@@ -30,6 +31,10 @@ const navItems = [
         ]
     },
     { name: 'History', href: '/dashboard/history', icon: History },
+];
+
+const secondaryItems = [
+    { name: 'Settings', href: '/dashboard/settings', icon: Settings },
 ];
 
 const Sidebar = () => {
@@ -69,7 +74,7 @@ const Sidebar = () => {
                 </button>
             </div>
             
-            <nav className="mt-6 flex-1 px-4 overflow-hidden">
+            <nav className="mt-6 flex-1 px-4 overflow-hidden flex flex-col justify-between pb-4">
                 <ul className="space-y-2">
                     {navItems.map((item) => (
                         <li key={item.name}>
@@ -129,6 +134,27 @@ const Sidebar = () => {
                         </li>
                     ))}
                 </ul>
+
+                <div className="space-y-4">
+                    <div className="mx-2 h-[1px] bg-white/5" />
+                    <ul className="space-y-2">
+                        {secondaryItems.map((item) => (
+                            <li key={item.name}>
+                                <Link
+                                    href={item.href || '#'}
+                                    className={`w-full flex items-center ${isCollapsed ? 'justify-center' : 'gap-3'} px-3 py-2 text-sm font-medium transition-all cursor-pointer rounded-lg whitespace-nowrap overflow-hidden ${pathname === item.href
+                                        ? 'bg-white/10 text-white shadow-sm ring-1 ring-white/10'
+                                        : 'text-gray-400 hover:text-white hover:bg-white/5'
+                                        }`}
+                                    title={isCollapsed ? item.name : undefined}
+                                >
+                                    <item.icon className={`w-5 h-5 shrink-0 ${pathname === item.href ? 'text-indigo-400' : ''}`} />
+                                    {!isCollapsed && <span className="truncate">{item.name}</span>}
+                                </Link>
+                            </li>
+                        ))}
+                    </ul>
+                </div>
             </nav>
         </aside>
     );
