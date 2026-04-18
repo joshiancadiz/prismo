@@ -32,8 +32,7 @@ export default async function SettingsPage() {
 
                     <div className="flex flex-col space-y-4">
                         <h2 className="text-sm font-semibold text-gray-400 uppercase tracking-wider ml-1">Preference</h2>
-                        
-                        <div className="bg-white/5 backdrop-blur-sm rounded-2xl border border-white/10 p-6 transition-all hover:border-white/20">
+                        <div className="ml-1 pt-2">
                             <ThemeToggle />
                         </div>
                     </div>
