@@ -4,13 +4,13 @@ import React from 'react';
 import Link from 'next/link';
 import { usePathname } from 'next/navigation';
 import Image from 'next/image';
-import { 
-    LayoutDashboard, 
-    FileText, 
-    History, 
-    Sparkles, 
-    ChevronDown, 
-    ChevronRight, 
+import {
+    LayoutDashboard,
+    FileText,
+    History,
+    Sparkles,
+    ChevronDown,
+    ChevronRight,
     Languages,
     PanelLeftClose,
     PanelLeft,
@@ -25,7 +25,7 @@ const navItems = [
         icon: Sparkles,
         isDropdown: true,
         children: [
-            { name: 'Text Enhance', href: '/dashboard/ai_enhance', icon: Sparkles },
+            { name: 'Enhance', href: '/dashboard/ai_enhance', icon: Sparkles },
             { name: 'Paraphraser', href: '/dashboard/ai_paraphrase', icon: Sparkles },
             { name: 'Translate', href: '/dashboard/ai_translate', icon: Languages },
         ]
@@ -66,14 +66,14 @@ const Sidebar = () => {
                         className="w-6 h-6 shrink-0"
                     />
                 )}
-                <button 
+                <button
                     onClick={() => setIsCollapsed(!isCollapsed)}
                     className="p-1 hover:bg-white/5 rounded-md text-gray-400 hover:text-white transition-colors cursor-pointer shrink-0 ml-auto"
                 >
                     {isCollapsed ? <PanelLeft className="w-5 h-5" /> : <PanelLeftClose className="w-5 h-5" />}
                 </button>
             </div>
-            
+
             <nav className="mt-6 flex-1 px-4 overflow-hidden flex flex-col justify-between pb-4">
                 <ul className="space-y-2">
                     {navItems.map((item) => (

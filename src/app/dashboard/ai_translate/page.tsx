@@ -2,6 +2,8 @@
 
 import React, { useState } from 'react';
 import { Languages, ArrowRightLeft, Copy, Trash2, ArrowRight, ChevronDown } from 'lucide-react';
+import { saveHistory } from '@/lib/supabase/updateHistory';
+import { createClient } from '@/utils/supabase/client';
 
 const LANGUAGES = [
     { value: 'Filipino/Tagalog', label: '🇵🇭 Filipino / Tagalog' },
@@ -48,6 +50,19 @@ export default function AITranslatePage() {
             }
 
             setResultText(data.translatedText);
+
+            // Save to history
+            const supabase = createClient();
+            const { data: { user } } = await supabase.auth.getUser();
+            if (user) {
+                await saveHistory({
+                    userId: user.id,
+                    originalText: inputText,
+                    processedText: data.translatedText,
+                    action: "translate",
+                    language: toLanguage,
+                });
+            }
         } catch {
             setResultText('Error: Failed to connect to the translation service.');
         } finally {
@@ -78,18 +93,15 @@ export default function AITranslatePage() {
     return (
         <div className="flex-1 p-8 overflow-y-auto h-full min-h-[calc(100vh-40px)] text-white">
             <div className="max-w-7xl mx-auto h-full flex flex-col">
- 
+
                 {/* Header */}
                 <div className="mb-6">
                     <div className="flex items-center gap-3 mb-2">
-                        <div className="w-10 h-10 rounded-[12px] bg-indigo-600 flex items-center justify-center shadow-lg shadow-indigo-500/20">
-                            <Languages className="w-6 h-6 text-white" />
-                        </div>
                         <h1 className="text-3xl font-bold text-white">AI Translate</h1>
                     </div>
                     <p className="text-gray-400">Translate your content into any language with AI-powered precision.</p>
                 </div>
- 
+
                 {/* Language Selector Bar */}
                 <div className="flex items-center gap-3 mb-6 p-4 bg-white/5 border border-white/5 rounded-[16px]">
                     {/* From Language */}
@@ -113,7 +125,7 @@ export default function AITranslatePage() {
                             <ChevronDown className="absolute right-3 top-1/2 -translate-y-1/2 w-4 h-4 text-gray-500 pointer-events-none" />
                         </div>
                     </div>
- 
+
                     {/* Swap Button */}
                     <div className="flex flex-col items-center justify-end pb-0.5">
                         <div className="h-4" /> {/* spacer for label */}
@@ -121,16 +133,15 @@ export default function AITranslatePage() {
                             onClick={handleSwapLanguages}
                             disabled={fromLanguage === 'auto'}
                             title={fromLanguage === 'auto' ? 'Cannot swap while Auto Detect is selected' : 'Swap languages'}
-                            className={`p-2 rounded-full border transition-all ${
-                                fromLanguage === 'auto'
+                            className={`p-2 rounded-full border transition-all ${fromLanguage === 'auto'
                                     ? 'border-white/5 text-gray-700 cursor-not-allowed'
                                     : 'border-white/10 text-gray-400 hover:bg-white/5 hover:border-indigo-500/50 hover:text-indigo-400 active:scale-90 cursor-pointer'
-                            }`}
+                                }`}
                         >
                             <ArrowRightLeft className="w-4 h-4" />
                         </button>
                     </div>
- 
+
                     {/* To Language */}
                     <div className="flex-1 relative">
                         <label className="block text-[10px] font-bold uppercase tracking-widest text-gray-500 mb-1 px-1">
@@ -153,10 +164,10 @@ export default function AITranslatePage() {
                         </div>
                     </div>
                 </div>
- 
+
                 {/* Text Areas */}
                 <div className="flex-1 grid grid-cols-1 lg:grid-cols-2 gap-6 min-h-[450px]">
- 
+
                     {/* Input Side */}
                     <div className="flex flex-col h-full">
                         <div className="flex items-center justify-between mb-3 px-1">
@@ -190,11 +201,10 @@ export default function AITranslatePage() {
                                     id="translate-button"
                                     onClick={handleTranslate}
                                     disabled={!inputText.trim() || isTranslating}
-                                    className={`flex items-center gap-2 px-6 py-3 rounded-full font-semibold text-sm transition-all cursor-pointer ${
-                                        !inputText.trim() || isTranslating
+                                    className={`flex items-center gap-2 px-6 py-3 rounded-full font-semibold text-sm transition-all cursor-pointer ${!inputText.trim() || isTranslating
                                             ? 'bg-white/5 text-gray-600 cursor-not-allowed border border-white/5'
                                             : 'bg-white text-black hover:bg-gray-200 shadow-lg shadow-white/5 hover:scale-105 active:scale-95'
-                                    }`}
+                                        }`}
                                 >
                                     {isTranslating ? (
                                         <>
@@ -210,7 +220,7 @@ export default function AITranslatePage() {
                             </div>
                         </div>
                     </div>
- 
+
                     {/* Output Side */}
                     <div className="flex flex-col h-full">
                         <div className="flex items-center justify-between mb-3 px-1">
@@ -233,11 +243,10 @@ export default function AITranslatePage() {
                         </div>
                         <div className="relative flex-1">
                             <div
-                                className={`w-full h-full p-6 border border-dashed rounded-[20px] overflow-y-auto transition-all ${
-                                    resultText
+                                className={`w-full h-full p-6 border border-dashed rounded-[20px] overflow-y-auto transition-all ${resultText
                                         ? 'bg-indigo-500/5 border-indigo-500/20 text-white'
                                         : 'bg-white/5 border-white/10 text-gray-600 flex items-center justify-center'
-                                }`}
+                                    }`}
                             >
                                 {resultText ? (
                                     <div className="whitespace-pre-wrap leading-relaxed animate-in fade-in duration-500">
@@ -254,7 +263,7 @@ export default function AITranslatePage() {
                             </div>
                         </div>
                     </div>
- 
+
                 </div>
             </div>
         </div>

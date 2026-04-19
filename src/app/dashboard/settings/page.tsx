@@ -1,4 +1,4 @@
-import { getUser } from '@/utils/supabase/getUser'
+import { getUser } from '@/lib/supabase/getUser'
 import UserProfile from '@/components/userProfile'
 import LogoutButton from '@/components/logoutButton'
 import ThemeToggle from '@/components/themeToggle'
@@ -17,7 +17,7 @@ export default async function SettingsPage() {
                 <div className="space-y-6 pt-4">
                     <div className="flex flex-col space-y-4">
                         <h2 className="text-sm font-semibold text-gray-400 uppercase tracking-wider ml-1">Account</h2>
-                        
+
                         <div className="bg-white/5 backdrop-blur-sm rounded-2xl border border-white/10 p-6 flex flex-col md:flex-row items-center justify-between gap-6 transition-all hover:border-white/20">
                             <UserProfile
                                 fullName={user.fullName || 'User'}

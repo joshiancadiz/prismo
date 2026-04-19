@@ -2,6 +2,8 @@
 
 import React, { useState } from 'react';
 import { Copy, Trash2, ArrowRight, Shuffle } from 'lucide-react';
+import { saveHistory } from '@/lib/supabase/updateHistory';
+import { createClient } from '@/utils/supabase/client';
 
 const TONES = [
     { value: 'Calm', label: 'Calm', description: 'Gentle & reassuring' },
@@ -41,6 +43,18 @@ export default function AIParaphrasePage() {
             }
 
             setResultText(data.paraphrasedText);
+
+            // Save to history
+            const supabase = createClient();
+            const { data: { user } } = await supabase.auth.getUser();
+            if (user) {
+                await saveHistory({
+                    userId: user.id,
+                    originalText: inputText,
+                    processedText: data.paraphrasedText,
+                    action: "paraphrase",
+                });
+            }
         } catch {
             setResultText("Error: Failed to connect to the paraphrase service.");
         } finally {
@@ -65,9 +79,6 @@ export default function AIParaphrasePage() {
                 {/* Header */}
                 <div className="mb-8">
                     <div className="flex items-center gap-3 mb-2">
-                        <div className="w-10 h-10 rounded-[12px] bg-violet-600 flex items-center justify-center shadow-lg shadow-violet-500/20">
-                            <Shuffle className="w-6 h-6 text-white" />
-                        </div>
                         <h1 className="text-3xl font-bold text-white">Paraphraser</h1>
                     </div>
                     <p className="text-gray-400">Rewrite your content in any tone with AI-powered paraphrasing.</p>
@@ -86,8 +97,8 @@ export default function AIParaphrasePage() {
                                 onClick={() => setSelectedTone(tone.value)}
                                 title={tone.description}
                                 className={`px-4 py-2 rounded-full text-xs font-semibold transition-all border cursor-pointer ${selectedTone === tone.value
-                                        ? 'bg-white text-black border-white shadow-md scale-105'
-                                        : 'bg-white/5 text-gray-400 border-white/10 hover:border-violet-500/50 hover:text-violet-400 hover:bg-white/10'
+                                    ? 'bg-white text-black border-white shadow-md scale-105'
+                                    : 'bg-white/5 text-gray-400 border-white/10 hover:border-violet-500/50 hover:text-violet-400 hover:bg-white/10'
                                     }`}
                             >
                                 {tone.label}
@@ -125,8 +136,8 @@ export default function AIParaphrasePage() {
                                     onClick={handleParaphrase}
                                     disabled={!inputText.trim() || isParaphrasing}
                                     className={`flex items-center gap-2 px-6 py-3 rounded-full font-semibold text-sm transition-all cursor-pointer ${!inputText.trim() || isParaphrasing
-                                            ? 'bg-white/5 text-gray-600 cursor-not-allowed border border-white/5'
-                                            : 'bg-white text-black hover:bg-gray-200 shadow-lg shadow-white/5 hover:scale-105 active:scale-95'
+                                        ? 'bg-white/5 text-gray-600 cursor-not-allowed border border-white/5'
+                                        : 'bg-white text-black hover:bg-gray-200 shadow-lg shadow-white/5 hover:scale-105 active:scale-95'
                                         }`}
                                 >
                                     {isParaphrasing ? (
@@ -167,8 +178,8 @@ export default function AIParaphrasePage() {
                         <div className="relative flex-1">
                             <div
                                 className={`w-full h-full p-6 border border-dashed rounded-[20px] overflow-y-auto transition-all ${resultText
-                                        ? 'bg-violet-500/5 border-violet-500/20 text-white'
-                                        : 'bg-white/5 border-white/10 text-gray-600 flex items-center justify-center'
+                                    ? 'bg-violet-500/5 border-violet-500/20 text-white'
+                                    : 'bg-white/5 border-white/10 text-gray-600 flex items-center justify-center'
                                     }`}
                             >
                                 {resultText ? (

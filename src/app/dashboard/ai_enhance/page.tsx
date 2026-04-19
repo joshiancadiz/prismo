@@ -1,7 +1,9 @@
 "use client";
 
 import React, { useState } from 'react';
-import { Sparkles, Wand2, Copy, Trash2, ArrowRight } from 'lucide-react';
+import { Wand2, Copy, Trash2, ArrowRight } from 'lucide-react';
+import { saveHistory } from '@/lib/supabase/updateHistory';
+import { createClient } from '@/utils/supabase/client';
 
 export default function AIEnhancePage() {
     const [inputText, setInputText] = useState("");
@@ -29,6 +31,18 @@ export default function AIEnhancePage() {
             }
 
             setResultText(data.enhancedText);
+
+            // Save to history
+            const supabase = createClient();
+            const { data: { user } } = await supabase.auth.getUser();
+            if (user) {
+                await saveHistory({
+                    userId: user.id,
+                    originalText: inputText,
+                    processedText: data.enhancedText,
+                    action: "enhance",
+                });
+            }
         } catch (error) {
             setResultText("Error: Failed to connect to the enhancement service.");
         } finally {
@@ -53,10 +67,7 @@ export default function AIEnhancePage() {
             <div className="max-w-7xl mx-auto h-full flex flex-col">
                 <div className="mb-8">
                     <div className="flex items-center gap-3 mb-2">
-                        <div className="w-10 h-10 rounded-[12px] bg-blue-600 flex items-center justify-center shadow-lg shadow-blue-500/20">
-                            <Sparkles className="w-6 h-6 text-white" />
-                        </div>
-                        <h1 className="text-3xl font-bold text-white">Text Enhance</h1>
+                        <h1 className="text-3xl font-bold text-white">Enhance</h1>
                     </div>
                     <p className="text-gray-400">Transform and refine your content with our intelligent enhancement engine.</p>
                 </div>
