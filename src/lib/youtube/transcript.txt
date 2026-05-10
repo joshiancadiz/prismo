@@ -1,0 +1,61 @@
+// d:/projects/prismo/src/lib/youtube/transcript.ts
+
+export interface TranscriptItem {
+    timestamp: string;
+    text: string;
+}
+
+export interface TranscriptOptions {
+    lang?: string; // Language code, default 'en'
+}
+
+/**
+ * Fetches the auto-generated transcript of a YouTube video
+ * by calling the yt-dlp backend service on Render.
+ * Returns parsed transcript items (timestamp + text) or null if unavailable.
+ */
+export async function fetchTranscript(
+    videoId: string,
+    options?: TranscriptOptions
+): Promise<TranscriptItem[] | null> {
+    if (!videoId || videoId.length !== 11) {
+        throw new Error("Invalid video ID");
+    }
+
+    const lang = options?.lang ?? "en";
+    const backendUrl = process.env.NEXT_PUBLIC_BACKEND_URL;
+
+    if (!backendUrl) {
+        console.error("NEXT_PUBLIC_BACKEND_URL is missing in environment variables");
+        return null;
+    }
+
+    try {
+        console.log(`Fetching transcript from backend for video: ${videoId}`);
+
+        const response = await fetch(`${backendUrl}/transcript`, {
+            method: "POST",
+            headers: { "Content-Type": "application/json" },
+            body: JSON.stringify({ videoId, lang }),
+        });
+
+        if (!response.ok) {
+            const errorData = await response.json().catch(() => ({}));
+            console.error("Backend transcript error:", response.status, errorData);
+            return null;
+        }
+
+        const data = await response.json();
+
+        if (!data.transcript || data.transcript.length === 0) {
+            console.log(`No transcript available for video: ${videoId}`);
+            return null;
+        }
+
+        console.log(`Received ${data.itemCount ?? data.transcript.length} transcript items`);
+        return data.transcript as TranscriptItem[];
+    } catch (err) {
+        console.error("Transcript Fetch Error:", err);
+        return null;
+    }
+}

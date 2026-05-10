@@ -1,11 +1,3 @@
-// d:/projects/prismo/src/app/lib/youtube/transcript.ts
-import { exec } from "child_process";
-import { promisify } from "util";
-import fs from "fs";
-import path from "path";
-
-const execAsync = promisify(exec);
-
 export interface TranscriptItem {
     timestamp: string;
     text: string;
@@ -13,12 +5,10 @@ export interface TranscriptItem {
 
 export interface TranscriptOptions {
     lang?: string;        // Language code, default 'en'
-    tmpDir?: string;      // Temporary folder for VTT files
-    ytDlpPath?: string;   // Full path to yt-dlp executable
 }
 
 /**
- * Fetches the auto-generated transcript of a YouTube video using yt-dlp.
+ * Fetches the transcript of a YouTube video using ytscribe API.
  * Returns parsed transcript items (timestamp + text) or null if unavailable.
  */
 export async function fetchTranscript(
@@ -29,104 +19,102 @@ export async function fetchTranscript(
         throw new Error("Invalid video ID");
     }
 
-    const lang = options?.lang ?? "en";
-    const tmpDir = options?.tmpDir ?? path.join(process.cwd(), "tmp");
-
-    // Check options, then environment variable, then fallback to local Windows path
-    const ytDlpPath = options?.ytDlpPath ?? process.env.YT_DLP_PATH;
-    console.log("YouTube Transcript Debug - Loaded environment keys:", Object.keys(process.env).filter(k => k.includes('YT') || k.includes('DLP')));
-
-    if (!ytDlpPath) {
-        console.error("YT_DLP_PATH is missing in environment variables");
+    const apiKey = process.env.YT_TRANSCRIPT_API;
+    
+    if (!apiKey) {
+        console.error("YT_TRANSCRIPT_API is missing in environment variables");
         return null;
     }
 
-    if (!fs.existsSync(tmpDir)) fs.mkdirSync(tmpDir);
-
-    const outputPath = path.join(tmpDir, `${videoId}.%(ext)s`);
-
-    const command = `"${ytDlpPath}" --write-auto-sub --sub-lang ${lang} --sub-format vtt --skip-download -o "${outputPath}" https://www.youtube.com/watch?v=${videoId}`;
-
     try {
-        await execAsync(command);
+        const response = await fetch('https://ytscribe.ai/api/transcripts', {
+            method: 'POST',
+            headers: {
+                'Authorization': `Bearer ${apiKey}`,
+                'Content-Type': 'application/json',
+            },
+            body: JSON.stringify({
+                url: `https://youtube.com/watch?v=${videoId}`
+            }),
+        });
 
-        const vttFile = path.join(tmpDir, `${videoId}.${lang}.vtt`);
-        if (!fs.existsSync(vttFile)) {
-            console.error(`Expected transcript file not found: ${vttFile}`);
+        if (!response.ok) {
+            console.error(`YT-Transcript API Error: ${response.status} ${response.statusText}`);
             return null;
         }
 
-        const vttContent = fs.readFileSync(vttFile, "utf-8");
-
-        const blocks = vttContent.split(/\n\s*\n/);
-        const transcript: TranscriptItem[] = [];
-
-        for (const block of blocks) {
-            const lines = block.trim().split('\n');
-            let timestamp = '';
-            let textLines = [];
-
-            for (const line of lines) {
-                if (line.includes('-->')) {
-                    // Extract start time, optionally strip hours if 00
-                    const rawTime = line.split(' --> ')[0].trim();
-                    timestamp = rawTime.startsWith('00:') ? rawTime.substring(3, 12) : rawTime.substring(0, 12);
-                } else if (line !== 'WEBVTT' && line.trim() && !line.includes('Kind: captions') && !line.includes('Language:')) {
-                    // Remove VTT styling tags like <c>
-                    textLines.push(line.replace(/<[^>]+>/g, '').trim());
-                }
-            }
-
-            if (timestamp && textLines.length > 0) {
-                const text = textLines.join(' ').replace(/\s+/g, ' ').trim();
-                
-                if (transcript.length > 0) {
-                    const lastIdx = transcript.length - 1;
-                    const lastText = transcript[lastIdx].text;
-
-                    if (lastText === text) {
-                        continue;
-                    }
-
-                    // For word-by-word rolling captions where sentence builds up
-                    if (text.startsWith(lastText)) {
-                        transcript[lastIdx].text = text;
-                        continue;
-                    }
-
-                    // For line-by-line scrolling, find overlapping words
-                    const lastWords = lastText.split(' ');
-                    const currentWords = text.split(' ');
-                    
-                    let overlapWords = 0;
-                    const maxOverlap = Math.min(lastWords.length, currentWords.length);
-                    
-                    for (let i = maxOverlap; i > 0; i--) {
-                        if (lastWords.slice(-i).join(' ') === currentWords.slice(0, i).join(' ')) {
-                            overlapWords = i;
-                            break;
-                        }
-                    }
-
-                    if (overlapWords > 0) {
-                        const remainingWords = currentWords.slice(overlapWords);
-                        if (remainingWords.length > 0) {
-                            transcript.push({ timestamp, text: remainingWords.join(' ') });
-                        }
-                        continue;
-                    }
-                }
-                
-                transcript.push({ timestamp, text });
-            }
+        const responseData = await response.json();
+        
+        // ytscribe returns the array inside `data.segments`
+        if (!responseData || !responseData.data || !Array.isArray(responseData.data.segments)) {
+            console.error("Invalid response from transcript API");
+            return null;
         }
 
-        // Clean up temporary file
-        fs.unlinkSync(vttFile);
+        const rawTranscript: any[] = responseData.data.segments;
+        const transcript: TranscriptItem[] = [];
+
+        // Helper to format seconds (e.g. 65.5) into MM:SS.mmm (01:05.500) or HH:MM:SS.mmm
+        const formatTime = (seconds: number) => {
+            const date = new Date(Math.floor(seconds * 1000));
+            const h = date.getUTCHours().toString().padStart(2, '0');
+            const m = date.getUTCMinutes().toString().padStart(2, '0');
+            const s = date.getUTCSeconds().toString().padStart(2, '0');
+            const ms = date.getUTCMilliseconds().toString().padStart(3, '0');
+            return h === '00' ? `${m}:${s}.${ms}` : `${h}:${m}:${s}.${ms}`;
+        };
+
+        for (const item of rawTranscript) {
+            // Segments have `start`, `end`, `text`
+            const timestamp = item.start !== undefined ? formatTime(item.start) : '';
+            const rawText = item.text || '';
+            const text = rawText.replace(/\s+/g, ' ').trim();
+
+            if (!text) continue;
+
+            if (transcript.length > 0) {
+                const lastIdx = transcript.length - 1;
+                const lastText = transcript[lastIdx].text;
+
+                if (lastText === text) {
+                    continue;
+                }
+
+                // For word-by-word rolling captions where sentence builds up
+                if (text.startsWith(lastText)) {
+                    transcript[lastIdx].text = text;
+                    continue;
+                }
+
+                // For line-by-line scrolling, find overlapping words
+                const lastWords = lastText.split(' ');
+                const currentWords = text.split(' ');
+                
+                let overlapWords = 0;
+                const maxOverlap = Math.min(lastWords.length, currentWords.length);
+                
+                for (let i = maxOverlap; i > 0; i--) {
+                    if (lastWords.slice(-i).join(' ') === currentWords.slice(0, i).join(' ')) {
+                        overlapWords = i;
+                        break;
+                    }
+                }
+
+                if (overlapWords > 0) {
+                    const remainingWords = currentWords.slice(overlapWords);
+                    if (remainingWords.length > 0) {
+                        transcript.push({ timestamp, text: remainingWords.join(' ') });
+                    }
+                    continue;
+                }
+            }
+            
+            transcript.push({ timestamp, text });
+        }
 
         return transcript.length > 0 ? transcript : null;
     } catch (err) {
-        console.error("YT-DLP Transcript Error:", err);
+        console.error("YT-Transcript Fetch Error:", err);
         return null;
     }
 }
