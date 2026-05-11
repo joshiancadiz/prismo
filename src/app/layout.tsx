@@ -37,7 +37,7 @@ export default async function RootLayout({
       >
         <div className="flex h-screen w-screen overflow-hidden">
           {user && <Sidebar />}
-          <main className="flex-1 flex flex-col overflow-hidden bg-[#08090D]">
+          <main className="flex-1 flex flex-col overflow-y-auto bg-[#08090D]">
             {children}
           </main>
         </div>

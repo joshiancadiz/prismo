@@ -198,6 +198,9 @@ export default function AIParaphrasePage() {
                         </div>
                     </div>
                 </div>
+                <div className="mt-4 pb-16 text-xs text-gray-500 font-medium text-left">
+                    Note: Prismo AI can make mistakes. Please verify important information.
+                </div>
             </div>
         </div>
     );
