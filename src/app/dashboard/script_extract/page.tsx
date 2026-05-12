@@ -42,6 +42,11 @@ export default function ScriptExtractPage({ params }: { params: Promise<{}> }) {
                 return;
             }
 
+            if (!data.hasTranscript || !data.transcript) {
+                setError('Scripts cannot be extracted from this video. It may be an official music video or lack available captions.');
+                return;
+            }
+
             console.log('Video processed successfully:', data);
             setVideoData(data);
 
@@ -87,9 +92,7 @@ export default function ScriptExtractPage({ params }: { params: Promise<{}> }) {
                         <p className="text-gray-400 mt-2">Extract precise text, captions, and insights from Youtube videos and shorts.</p>
                     </div>
                     <div className="flex gap-2">
-                        <div className="p-2 bg-pink-500/10 rounded-lg"><Instagram className="w-5 h-5 text-pink-500" /></div>
                         <div className="p-2 bg-red-500/10 rounded-lg"><Youtube className="w-5 h-5 text-red-500" /></div>
-                        <div className="p-2 bg-slate-500/10 rounded-lg"><Clapperboard className="w-5 h-5 text-slate-300" /></div>
                     </div>
                 </div>
 
@@ -143,27 +146,22 @@ export default function ScriptExtractPage({ params }: { params: Promise<{}> }) {
                                     Clear
                                 </button>
                             </div>
-                            <p className="text-xs text-gray-500 mt-3">Supports Youtube Videos, YouTube Shorts, and Tiktok Reels.</p>
                         </div>
 
                         {/* Extraction Tips */}
                         <div className="bg-purple-500/10 p-6 rounded-[15px] border border-purple-500/20">
                             <h2 className="text-lg font-semibold mb-2 flex items-center gap-2 text-purple-300">
                                 <Info className="w-5 h-5" />
-                                Extraction Tips
+                                Extraction Rules
                             </h2>
                             <ul className="space-y-3">
                                 <li className="flex items-start gap-2 text-xs text-purple-200/70">
                                     <CheckCircle2 className="w-3 h-3 mt-0.5 flex-shrink-0" />
-                                    Video duration must not exceed 10 minutes.
-                                </li>
-                                <li className="flex items-start gap-2 text-xs text-purple-200/70">
-                                    <CheckCircle2 className="w-3 h-3 mt-0.5 flex-shrink-0" />
-                                    Clear background music helps increase transcription accuracy.
+                                    Duration must not exceed 10 minutes.
                                 </li>
                                 <li className="flex items-start gap-2 text-xs text-purple-200/70">
                                     <AlertCircle className="w-3 h-3 mt-0.5 flex-shrink-0" />
-                                    Processing may take 1-2x the duration of the video.
+                                    Videos without available transcripts or due to copyright protection cannot be extracted.
                                 </li>
                             </ul>
                         </div>
