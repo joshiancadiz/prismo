@@ -5,7 +5,7 @@ interface SaveHistoryParams {
     userId: string;
     originalText: string;
     processedText: string;
-    action: "enhance" | "paraphrase" | "translate";
+    action: "enhance" | "paraphrase" | "translate" | "extract";
     language?: string;
 }
 

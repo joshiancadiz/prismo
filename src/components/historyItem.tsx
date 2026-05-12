@@ -20,7 +20,7 @@ export default function HistoryItem({ id, action, output, date }: HistoryItemPro
     return (
         <tr 
             onClick={handleRowClick}
-            className="hover:bg-white/5 transition-all duration-300 group cursor-pointer"
+            className="hover:bg-white/[0.03] border-b border-white/5 last:border-0 transition-colors duration-200 group cursor-pointer outline-none focus:outline-none select-none"
         >
             <td className="px-6 py-4">
                 <span className="text-sm font-medium text-white group-hover:text-blue-400 transition-colors truncate">

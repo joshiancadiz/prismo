@@ -3,6 +3,8 @@
 import React, { useState } from 'react';
 import { Play, Info, CheckCircle2, AlertCircle, Link as LinkIcon, Instagram, Youtube, Clapperboard, Copy, Clock, Check, X } from 'lucide-react';
 // import { extractYoutubeId } from '@/app/lib/youtube/parse';
+import { saveHistory } from '@/lib/supabase/updateHistory';
+import { createClient } from '@/utils/supabase/client';
 
 export default function ScriptExtractPage({ params }: { params: Promise<{}> }) {
     const [videoUrl, setVideoUrl] = useState('');
@@ -42,6 +44,19 @@ export default function ScriptExtractPage({ params }: { params: Promise<{}> }) {
 
             console.log('Video processed successfully:', data);
             setVideoData(data);
+
+            // Save to history
+            const supabase = createClient();
+            const { data: { user } } = await supabase.auth.getUser();
+            if (user && data.transcript) {
+                const pureText = data.transcript.map((item: { text: string }) => item.text).join('\n');
+                await saveHistory({
+                    userId: user.id,
+                    originalText: url,
+                    processedText: pureText,
+                    action: "extract",
+                });
+            }
         } catch (err) {
             console.error('Error calling API:', err);
             setError('Failed to connect to the server. Please try again.');

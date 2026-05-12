@@ -2,7 +2,7 @@ import { createClient } from "@/utils/supabase/client";
 
 export interface HistoryRecord {
     id: string;
-    action: "enhance" | "paraphrase" | "translate";
+    action: "enhance" | "paraphrase" | "translate" | "extract";
     original_text: string;
     processed_text: string;
     language: string | null;
