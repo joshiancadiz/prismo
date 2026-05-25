@@ -1,9 +1,5 @@
-import DashboardPage from './dashboard/page';
+import { redirect } from 'next/navigation';
 
-export default function Home(props: { params: Promise<{}> }) {
-  return (
-    <div className="flex-1 p-8 overflow-y-auto">
-      <DashboardPage />
-    </div>
-  );
+export default function Home() {
+  redirect('/dashboard');
 }

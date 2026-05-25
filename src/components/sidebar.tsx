@@ -43,7 +43,7 @@ const Sidebar = () => {
     const [isCollapsed, setIsCollapsed] = React.useState(false);
 
     return (
-        <aside className={`${isCollapsed ? 'w-[80px]' : 'w-64'} bg-[#08090D] h-screen transition-all duration-300 border-r border-white/5 flex flex-col z-50 overflow-hidden shadow-xl`}>
+        <aside className={`${isCollapsed ? 'w-[80px]' : 'w-64'} bg-background h-screen transition-[width] duration-300 border-r border-border flex flex-col z-50 overflow-hidden shadow-xl`}>
             <div className="p-6 flex items-end justify-between overflow-hidden">
                 {!isCollapsed && (
                     <div className="flex items-end gap-3 whitespace-nowrap overflow-hidden">
@@ -54,7 +54,7 @@ const Sidebar = () => {
                             height={24}
                             className="w-6 h-6 shrink-0"
                         />
-                        <h2 className="font-semibold text-white text-xl leading-none">Prismo AI</h2>
+                        <h2 className="font-semibold text-foreground text-xl leading-none">Prismo AI</h2>
                     </div>
                 )}
                 {isCollapsed && (
@@ -68,7 +68,7 @@ const Sidebar = () => {
                 )}
                 <button
                     onClick={() => setIsCollapsed(!isCollapsed)}
-                    className="p-1 hover:bg-white/5 rounded-md text-gray-400 hover:text-white transition-colors cursor-pointer shrink-0 ml-auto"
+                    className="p-1 hover:bg-foreground/5 rounded-md text-muted hover:text-foreground transition-colors cursor-pointer shrink-0 ml-auto"
                 >
                     {isCollapsed ? <PanelLeft className="w-5 h-5" /> : <PanelLeftClose className="w-5 h-5" />}
                 </button>
@@ -83,8 +83,8 @@ const Sidebar = () => {
                                     <button
                                         onClick={() => !isCollapsed && setIsAIToolsOpen(!isAIToolsOpen)}
                                         className={`w-full flex items-center ${isCollapsed ? 'justify-center' : 'justify-between'} px-3 py-2 text-sm font-medium transition-all cursor-pointer rounded-lg ${isAIToolsOpen || item.children?.some(child => pathname === child.href)
-                                            ? 'bg-white/10 text-white shadow-sm ring-1 ring-white/10'
-                                            : 'text-gray-400 hover:text-white hover:bg-white/5'
+                                            ? 'bg-foreground/10 text-foreground shadow-sm ring-1 ring-foreground/10'
+                                            : 'text-muted hover:text-foreground hover:bg-foreground/5'
                                             }`}
                                         title={isCollapsed ? item.name : undefined}
                                     >
@@ -101,14 +101,14 @@ const Sidebar = () => {
                                         )}
                                     </button>
                                     {isAIToolsOpen && !isCollapsed && (
-                                        <ul className="mt-2 ml-4 space-y-1 relative before:absolute before:left-[-1px] before:top-0 before:bottom-0 before:w-[1px] before:bg-white/10 overflow-hidden">
+                                        <ul className="mt-2 ml-4 space-y-1 relative before:absolute before:left-[-1px] before:top-0 before:bottom-0 before:w-[1px] before:bg-foreground/10 overflow-hidden">
                                             {item.children?.map((child) => (
                                                 <li key={child.name}>
                                                     <Link
                                                         href={child.href}
                                                         className={`w-full flex items-center gap-3 px-4 py-2 text-xs font-medium transition-all cursor-pointer rounded-lg whitespace-nowrap overflow-hidden ${pathname === child.href
-                                                            ? 'text-white bg-white/10'
-                                                            : 'text-gray-500 hover:text-white hover:bg-white/5'
+                                                            ? 'text-foreground bg-foreground/10'
+                                                            : 'text-muted hover:text-foreground hover:bg-foreground/5'
                                                             }`}
                                                     >
                                                         <span className="truncate">{child.name}</span>
@@ -122,8 +122,8 @@ const Sidebar = () => {
                                 <Link
                                     href={item.href || '#'}
                                     className={`w-full flex items-center ${isCollapsed ? 'justify-center' : 'gap-3'} px-3 py-2 text-sm font-medium transition-all cursor-pointer rounded-lg whitespace-nowrap overflow-hidden ${(pathname === item.href || (pathname === '/' && item.href === '/dashboard'))
-                                        ? 'bg-white/10 text-white shadow-sm ring-1 ring-white/10'
-                                        : 'text-gray-400 hover:text-white hover:bg-white/5'
+                                        ? 'bg-foreground/10 text-foreground shadow-sm ring-1 ring-foreground/10'
+                                        : 'text-muted hover:text-foreground hover:bg-foreground/5'
                                         }`}
                                     title={isCollapsed ? item.name : undefined}
                                 >
@@ -136,15 +136,15 @@ const Sidebar = () => {
                 </ul>
 
                 <div className="space-y-4">
-                    <div className="mx-2 h-[1px] bg-white/5" />
+                    <div className="mx-2 h-[1px] bg-border" />
                     <ul className="space-y-2">
                         {secondaryItems.map((item) => (
                             <li key={item.name}>
                                 <Link
                                     href={item.href || '#'}
                                     className={`w-full flex items-center ${isCollapsed ? 'justify-center' : 'gap-3'} px-3 py-2 text-sm font-medium transition-all cursor-pointer rounded-lg whitespace-nowrap overflow-hidden ${pathname === item.href
-                                        ? 'bg-white/10 text-white shadow-sm ring-1 ring-white/10'
-                                        : 'text-gray-400 hover:text-white hover:bg-white/5'
+                                        ? 'bg-foreground/10 text-foreground shadow-sm ring-1 ring-foreground/10'
+                                        : 'text-muted hover:text-foreground hover:bg-foreground/5'
                                         }`}
                                     title={isCollapsed ? item.name : undefined}
                                 >

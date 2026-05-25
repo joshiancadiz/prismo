@@ -8,7 +8,7 @@ interface UserProfileProps {
 
 export default function UserProfile({ fullName, email, avatarUrl }: UserProfileProps) {
     return (
-        <div style={{ display: 'flex', alignItems: 'center', gap: '12px' }}>
+        <div className="flex items-center gap-3">
             {/* Avatar */}
             {avatarUrl ? (
                 <Image
@@ -16,28 +16,19 @@ export default function UserProfile({ fullName, email, avatarUrl }: UserProfileP
                     alt={fullName}
                     width={50}
                     height={50}
-                    style={{ borderRadius: '50%' }}
+                    className="rounded-full"
                 />
             ) : (
                 // Fallback if no profile picture
-                <div style={{
-                    width: 50,
-                    height: 50,
-                    borderRadius: '50%',
-                    background: '#ccc',
-                    display: 'flex',
-                    alignItems: 'center',
-                    justifyContent: 'center',
-                    fontWeight: 'bold',
-                }}>
+                <div className="w-[50px] h-[50px] rounded-full bg-foreground/20 flex items-center justify-center font-bold text-foreground">
                     {fullName?.charAt(0).toUpperCase()}  {/* Show first letter as fallback */}
                 </div>
             )}
 
             {/* Info */}
             <div>
-                <p style={{ fontWeight: 'bold' }}>{fullName}</p>
-                <p style={{ color: 'gray', fontSize: '14px' }}>{email}</p>
+                <p className="font-bold text-foreground">{fullName}</p>
+                <p className="text-muted text-sm">{email}</p>
             </div>
         </div>
     )

@@ -74,21 +74,21 @@ export default function AIParaphrasePage() {
     };
 
     return (
-        <div className="flex-1 p-8 overflow-y-auto h-full min-h-[calc(100vh-40px)] text-white">
+        <div className="flex-1 p-8 overflow-y-auto h-full min-h-[calc(100vh-40px)] text-foreground">
             <div className="max-w-7xl mx-auto h-full flex flex-col">
                 {/* Header */}
                 <div className="mb-8">
                     <div className="flex items-center gap-3 mb-2">
-                        <h1 className="text-3xl font-bold text-white">Paraphraser</h1>
+                        <h1 className="text-3xl font-bold text-foreground">Paraphraser</h1>
                     </div>
-                    <p className="text-gray-400">Rewrite your content in any tone with AI-powered paraphrasing.</p>
+                    <p className="text-muted">Rewrite your content in any tone with AI-powered paraphrasing.</p>
                 </div>
 
                 {/* Tone Selector */}
                 <div className="mb-6">
-                    <label className="text-sm font-semibold text-white mb-3 flex items-center gap-2">
+                    <label className="text-sm font-semibold text-foreground mb-3 flex items-center gap-2">
                         Tone
-                        <span className="text-[10px] font-normal text-gray-500">Select the writing tone</span>
+                        <span className="text-[10px] font-normal text-muted">Select the writing tone</span>
                     </label>
                     <div className="flex flex-wrap gap-2 mt-2">
                         {TONES.map((tone) => (
@@ -97,8 +97,8 @@ export default function AIParaphrasePage() {
                                 onClick={() => setSelectedTone(tone.value)}
                                 title={tone.description}
                                 className={`px-4 py-2 rounded-full text-xs font-semibold transition-all border cursor-pointer ${selectedTone === tone.value
-                                    ? 'bg-white text-black border-white shadow-md scale-105'
-                                    : 'bg-white/5 text-gray-400 border-white/10 hover:border-violet-500/50 hover:text-violet-400 hover:bg-white/10'
+                                    ? 'bg-foreground text-background border-foreground shadow-md scale-105'
+                                    : 'bg-card text-muted border-border hover:border-violet-500/50 hover:text-violet-400 hover:bg-foreground/5'
                                     }`}
                             >
                                 {tone.label}
@@ -112,13 +112,13 @@ export default function AIParaphrasePage() {
                     {/* Input Side */}
                     <div className="flex flex-col h-full">
                         <div className="flex items-center justify-between mb-3 px-1">
-                            <label className="text-sm font-semibold text-white flex items-center gap-2">
+                            <label className="text-sm font-semibold text-foreground flex items-center gap-2">
                                 Input Content
-                                <span className="text-[10px] font-normal text-gray-500">Enter text to paraphrase</span>
+                                <span className="text-[10px] font-normal text-muted">Enter text to paraphrase</span>
                             </label>
                             <button
                                 onClick={handleClear}
-                                className="text-gray-500 hover:text-red-400 transition-colors p-1 cursor-pointer"
+                                className="text-muted hover:text-red-400 transition-colors p-1 cursor-pointer"
                                 title="Clear Input"
                             >
                                 <Trash2 className="w-4 h-4" />
@@ -129,20 +129,20 @@ export default function AIParaphrasePage() {
                                 value={inputText}
                                 onChange={(e) => setInputText(e.target.value)}
                                 placeholder="Paste your text here..."
-                                className="w-full h-full p-6 bg-white/5 border border-white/10 rounded-[20px] focus:outline-none focus:ring-2 focus:ring-violet-500/20 focus:border-violet-500/50 transition-all resize-none text-white placeholder:text-gray-600"
+                                className="w-full h-full p-6 bg-card border border-border rounded-[20px] focus:outline-none focus:ring-2 focus:ring-violet-500/20 focus:border-violet-500/50 transition-all resize-none text-foreground placeholder:text-muted/50"
                             />
                             <div className="absolute bottom-4 right-4">
                                 <button
                                     onClick={handleParaphrase}
                                     disabled={!inputText.trim() || isParaphrasing}
                                     className={`flex items-center gap-2 px-6 py-3 rounded-full font-semibold text-sm transition-all cursor-pointer ${!inputText.trim() || isParaphrasing
-                                        ? 'bg-white/5 text-gray-600 cursor-not-allowed border border-white/5'
-                                        : 'bg-white text-black hover:bg-gray-200 shadow-lg shadow-white/5 hover:scale-105 active:scale-95'
+                                        ? 'bg-foreground/5 text-muted cursor-not-allowed border border-border'
+                                        : 'bg-foreground text-background hover:opacity-90 shadow-lg shadow-foreground/5 hover:scale-105 active:scale-95'
                                         }`}
                                 >
                                     {isParaphrasing ? (
                                         <>
-                                            <div className="w-4 h-4 border-2 border-black/30 border-t-black rounded-full animate-spin" />
+                                            <div className="w-4 h-4 border-2 border-background/30 border-t-background rounded-full animate-spin" />
                                             Paraphrasing...
                                         </>
                                     ) : (
@@ -158,9 +158,9 @@ export default function AIParaphrasePage() {
                     {/* Output Side */}
                     <div className="flex flex-col h-full">
                         <div className="flex items-center justify-between mb-3 px-1">
-                            <label className="text-sm font-semibold text-white flex items-center gap-2">
+                            <label className="text-sm font-semibold text-foreground flex items-center gap-2">
                                 AI Result
-                                <span className="text-[10px] font-normal text-gray-500">
+                                <span className="text-[10px] font-normal text-muted">
                                     {selectedTone ? (
                                         <span className="text-violet-400 font-semibold">{selectedTone} tone</span>
                                     ) : 'Paraphrased output'}
@@ -169,7 +169,7 @@ export default function AIParaphrasePage() {
                             {resultText && (
                                 <button
                                     onClick={handleCopy}
-                                    className="text-gray-400 hover:text-violet-400 transition-colors p-1 flex items-center gap-1 text-[10px] font-bold uppercase tracking-wider cursor-pointer"
+                                    className="text-muted hover:text-violet-400 transition-colors p-1 flex items-center gap-1 text-[10px] font-bold uppercase tracking-wider cursor-pointer"
                                 >
                                     <Copy className="w-3 h-3" /> Copy
                                 </button>
@@ -178,8 +178,8 @@ export default function AIParaphrasePage() {
                         <div className="relative flex-1">
                             <div
                                 className={`w-full h-full p-6 border border-dashed rounded-[20px] overflow-y-auto transition-all ${resultText
-                                    ? 'bg-violet-500/5 border-violet-500/20 text-white'
-                                    : 'bg-white/5 border-white/10 text-gray-600 flex items-center justify-center'
+                                    ? 'bg-violet-500/5 border-violet-500/20 text-foreground'
+                                    : 'bg-card border-border text-muted flex items-center justify-center'
                                     }`}
                             >
                                 {resultText ? (
@@ -188,17 +188,17 @@ export default function AIParaphrasePage() {
                                     </div>
                                 ) : (
                                     <div className="text-center">
-                                        <div className="w-12 h-12 rounded-full bg-white/5 flex items-center justify-center mx-auto mb-4 shadow-sm border border-white/5">
-                                            <ArrowRight className="w-6 h-6 text-gray-700" />
+                                        <div className="w-12 h-12 rounded-full bg-foreground/5 flex items-center justify-center mx-auto mb-4 shadow-sm border border-border">
+                                            <ArrowRight className="w-6 h-6 text-muted/50" />
                                         </div>
-                                        <p className="text-xs font-medium text-gray-500">Paraphrased content will appear here</p>
+                                        <p className="text-xs font-medium text-muted">Paraphrased content will appear here</p>
                                     </div>
                                 )}
                             </div>
                         </div>
                     </div>
                 </div>
-                <div className="mt-4 pb-16 text-xs text-gray-500 font-medium text-left">
+                <div className="mt-4 pb-16 text-xs text-muted font-medium text-left">
                     Note: Prismo AI can make mistakes. Please verify important information.
                 </div>
             </div>

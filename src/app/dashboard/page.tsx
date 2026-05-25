@@ -60,41 +60,41 @@ export default function DashboardPage({ params }: { params?: Promise<any> } = {}
             <div className="space-y-8">
                 <div className="flex items-center justify-between">
                     <div>
-                        <h1 className="text-3xl font-bold text-white">Dashboard Overview</h1>
-                        <p className="text-gray-400 mt-2">Welcome back to Prismo AI. Here&apos;s what&apos;s happening today.</p>
+                        <h1 className="text-3xl font-bold text-foreground">Dashboard Overview</h1>
+                        <p className="text-muted mt-2">Welcome back to Prismo AI. Here&apos;s what&apos;s happening today.</p>
                     </div>
                 </div>
  
                 <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
                     {stats.map((stat) => (
-                        <div key={stat.name} className="p-6 bg-white/5 rounded-[15px] border border-white/5 hover:border-white/10 hover:shadow-sm transition-all group">
+                        <div key={stat.name} className="p-6 bg-card rounded-[15px] border border-border hover:border-foreground/10 hover:shadow-sm transition-all group">
                             <div className="flex items-center justify-between mb-4">
                                 <stat.icon className={`w-8 h-8 ${stat.color} transition-transform group-hover:scale-110`} />
-                                <span className="text-2xl font-bold text-white">
+                                <span className="text-2xl font-bold text-foreground">
                                     {loading ? <Loader2 className="w-5 h-5 animate-spin" /> : stat.value}
                                 </span>
                             </div>
-                            <h3 className="text-sm font-medium text-gray-400">{stat.name}</h3>
+                            <h3 className="text-sm font-medium text-muted">{stat.name}</h3>
                         </div>
                     ))}
                 </div>
 
                 <div className="space-y-4">
-                    <h2 className="text-xl font-bold text-white">Quick Actions</h2>
+                    <h2 className="text-xl font-bold text-foreground">Quick Actions</h2>
                     <div className="flex flex-col gap-3 max-w-md">
                         {quickActions.map((action) => (
                             <Link 
                                 key={action.name} 
                                 href={action.href}
-                                className="flex items-center justify-between p-4 bg-white/5 border border-white/5 rounded-[12px] hover:bg-white/10 hover:border-white/10 transition-all group"
+                                className="flex items-center justify-between p-4 bg-card border border-border rounded-[12px] hover:bg-foreground/5 hover:border-foreground/10 transition-all group"
                             >
                                 <div className="flex items-center gap-3">
-                                    <div className={`p-2 rounded-lg bg-white/5 group-hover:bg-white/10 transition-colors`}>
+                                    <div className={`p-2 rounded-lg bg-foreground/5 group-hover:bg-foreground/10 transition-colors`}>
                                         <action.icon className={`w-5 h-5 ${action.color}`} />
                                     </div>
-                                    <span className="text-sm font-medium text-white">{action.name}</span>
+                                    <span className="text-sm font-medium text-foreground">{action.name}</span>
                                 </div>
-                                <ChevronRight className="w-4 h-4 text-gray-500 group-hover:text-white transition-colors" />
+                                <ChevronRight className="w-4 h-4 text-muted group-hover:text-foreground transition-colors" />
                             </Link>
                         ))}
                     </div>

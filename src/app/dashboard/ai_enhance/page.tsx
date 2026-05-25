@@ -63,26 +63,26 @@ export default function AIEnhancePage() {
     };
 
     return (
-        <div className="flex-1 p-8 overflow-y-auto h-full min-h-[calc(100vh-40px)] text-white">
+        <div className="flex-1 p-8 overflow-y-auto h-full min-h-[calc(100vh-40px)] text-foreground">
             <div className="max-w-7xl mx-auto h-full flex flex-col">
                 <div className="mb-8">
                     <div className="flex items-center gap-3 mb-2">
-                        <h1 className="text-3xl font-bold text-white">Enhance</h1>
+                        <h1 className="text-3xl font-bold text-foreground">Enhance</h1>
                     </div>
-                    <p className="text-gray-400">Transform and refine your content with our intelligent enhancement engine.</p>
+                    <p className="text-muted">Transform and refine your content with our intelligent enhancement engine.</p>
                 </div>
 
                 <div className="flex-1 grid grid-cols-1 lg:grid-cols-2 gap-8 min-h-[500px]">
                     {/* Input Side */}
                     <div className="flex flex-col h-full">
                         <div className="flex items-center justify-between mb-3 px-1">
-                            <label className="text-sm font-semibold text-white flex items-center gap-2">
+                            <label className="text-sm font-semibold text-foreground flex items-center gap-2">
                                 Input Content
-                                <span className="text-[10px] font-normal text-gray-500">Enter text to enhance</span>
+                                <span className="text-[10px] font-normal text-muted">Enter text to enhance</span>
                             </label>
                             <button
                                 onClick={handleClear}
-                                className="text-gray-500 hover:text-red-400 transition-colors p-1 cursor-pointer"
+                                className="text-muted hover:text-red-400 transition-colors p-1 cursor-pointer"
                                 title="Clear Input"
                             >
                                 <Trash2 className="w-4 h-4" />
@@ -93,20 +93,20 @@ export default function AIEnhancePage() {
                                 value={inputText}
                                 onChange={(e) => setInputText(e.target.value)}
                                 placeholder="Paste your script or content here..."
-                                className="w-full h-full p-6 bg-white/5 border border-white/10 rounded-[20px] focus:outline-none focus:ring-2 focus:ring-blue-500/20 focus:border-blue-500/50 transition-all resize-none text-white placeholder:text-gray-600"
+                                className="w-full h-full p-6 bg-card border border-border rounded-[20px] focus:outline-none focus:ring-2 focus:ring-blue-500/20 focus:border-blue-500/50 transition-all resize-none text-foreground placeholder:text-muted/50"
                             />
                             <div className="absolute bottom-4 right-4">
                                 <button
                                     onClick={handleEnhance}
                                     disabled={!inputText.trim() || isEnhancing}
                                     className={`flex items-center gap-2 px-6 py-3 rounded-full font-semibold text-sm transition-all cursor-pointer ${!inputText.trim() || isEnhancing
-                                        ? 'bg-white/5 text-gray-600 cursor-not-allowed border border-white/5'
-                                        : 'bg-white text-black hover:bg-gray-200 shadow-lg shadow-white/5 hover:scale-105 active:scale-95'
+                                        ? 'bg-foreground/5 text-muted cursor-not-allowed border border-border'
+                                        : 'bg-foreground text-background hover:opacity-90 shadow-lg shadow-foreground/5 hover:scale-105 active:scale-95'
                                         }`}
                                 >
                                     {isEnhancing ? (
                                         <>
-                                            <div className="w-4 h-4 border-2 border-black/30 border-t-black rounded-full animate-spin" />
+                                            <div className="w-4 h-4 border-2 border-background/30 border-t-background rounded-full animate-spin" />
                                             Enhancing...
                                         </>
                                     ) : (
@@ -122,14 +122,14 @@ export default function AIEnhancePage() {
                     {/* Output Side */}
                     <div className="flex flex-col h-full">
                         <div className="flex items-center justify-between mb-3 px-1">
-                            <label className="text-sm font-semibold text-white flex items-center gap-2">
+                            <label className="text-sm font-semibold text-foreground flex items-center gap-2">
                                 AI Result
-                                <span className="text-[10px] font-normal text-gray-500">Refined output</span>
+                                <span className="text-[10px] font-normal text-muted">Refined output</span>
                             </label>
                             {resultText && (
                                 <button
                                     onClick={handleCopy}
-                                    className="text-gray-400 hover:text-blue-400 transition-colors p-1 flex items-center gap-1 text-[10px] font-bold uppercase tracking-wider cursor-pointer"
+                                    className="text-muted hover:text-blue-400 transition-colors p-1 flex items-center gap-1 text-[10px] font-bold uppercase tracking-wider cursor-pointer"
                                 >
                                     <Copy className="w-3 h-3" /> Copy
                                 </button>
@@ -138,8 +138,8 @@ export default function AIEnhancePage() {
                         <div className="relative flex-1">
                             <div
                                 className={`w-full h-full p-6 border border-dashed rounded-[20px] overflow-y-auto transition-all ${resultText
-                                    ? 'bg-blue-500/5 border-blue-500/20 text-white'
-                                    : 'bg-white/5 border-white/10 text-gray-600 flex items-center justify-center'
+                                    ? 'bg-blue-500/5 border-blue-500/20 text-foreground'
+                                    : 'bg-card border-border text-muted flex items-center justify-center'
                                     }`}
                             >
                                 {resultText ? (
@@ -148,17 +148,17 @@ export default function AIEnhancePage() {
                                     </div>
                                 ) : (
                                     <div className="text-center">
-                                        <div className="w-12 h-12 rounded-full bg-white/5 flex items-center justify-center mx-auto mb-4 shadow-sm border border-white/5">
-                                            <ArrowRight className="w-6 h-6 text-gray-700" />
+                                        <div className="w-12 h-12 rounded-full bg-foreground/5 flex items-center justify-center mx-auto mb-4 shadow-sm border border-border">
+                                            <ArrowRight className="w-6 h-6 text-muted/50" />
                                         </div>
-                                        <p className="text-xs font-medium text-gray-500">Enhanced content will appear here</p>
+                                        <p className="text-xs font-medium text-muted">Enhanced content will appear here</p>
                                     </div>
                                 )}
                             </div>
                         </div>
                     </div>
                 </div>
-                <div className="mt-4 pb-16 text-xs text-gray-500 font-medium text-left">
+                <div className="mt-4 pb-16 text-xs text-muted font-medium text-left">
                     Note: Prismo AI can make mistakes. Please verify important information.
                 </div>
             </div>

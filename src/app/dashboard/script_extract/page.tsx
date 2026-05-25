@@ -84,12 +84,12 @@ export default function ScriptExtractPage({ params }: { params: Promise<{}> }) {
 
 
     return (
-        <div className="flex-1 p-8 overflow-y-auto h-full text-white">
+        <div className="flex-1 p-8 overflow-y-auto h-full text-foreground">
             <div className="space-y-8">
                 <div className="flex justify-between items-start">
                     <div>
-                        <h1 className="text-3xl font-bold text-white">Script Extractor</h1>
-                        <p className="text-gray-400 mt-2">Extract precise text, captions, and insights from Youtube videos and shorts.</p>
+                        <h1 className="text-3xl font-bold text-foreground">Script Extractor</h1>
+                        <p className="text-muted mt-2">Extract precise text, captions, and insights from Youtube videos and shorts.</p>
                     </div>
                     <div className="flex gap-2">
                         <div className="p-2 bg-red-500/10 rounded-lg"><Youtube className="w-5 h-5 text-red-500" /></div>
@@ -108,15 +108,15 @@ export default function ScriptExtractPage({ params }: { params: Promise<{}> }) {
                     {/* Inputs Left Side */}
                     <div className={`space-y-6 w-full ${videoData?.transcript ? 'lg:max-w-[400px] xl:max-w-[480px] shrink-0' : 'max-w-lg'}`}>
                         {/* URL Input */}
-                        <div className="bg-white/5 p-6 rounded-[15px] border border-white/5">
-                            <h2 className="text-lg font-semibold mb-4 flex items-center gap-2 text-gray-300">
+                        <div className="bg-card p-6 rounded-[15px] border border-border">
+                            <h2 className="text-lg font-semibold mb-4 flex items-center gap-2 text-muted">
                                 <LinkIcon className="w-5 h-5 text-blue-400" />
                                 Paste Video URL
                             </h2>
                             <div className="flex gap-2">
                                 <input
                                     type="text"
-                                    className="flex-1 p-3 bg-white/5 border border-white/10 rounded-[10px] text-sm focus:outline-none focus:ring-2 focus:ring-blue-500/20 transition-all text-white placeholder-gray-500"
+                                    className="flex-1 p-3 bg-foreground/5 border border-border rounded-[10px] text-sm focus:outline-none focus:ring-2 focus:ring-blue-500/20 transition-all text-foreground placeholder-muted/50"
                                     placeholder="https://www.youtube.com/shorts/..."
                                     value={videoUrl}
                                     onChange={(e) => setVideoUrl(e.target.value)}
@@ -125,11 +125,11 @@ export default function ScriptExtractPage({ params }: { params: Promise<{}> }) {
                                 <button
                                     onClick={handleProcessUrl}
                                     disabled={isLoading}
-                                    className={`px-6 py-2 bg-white text-black text-sm font-medium rounded-[10px] hover:bg-gray-200 transition-colors flex items-center gap-2 cursor-pointer ${isLoading ? 'opacity-50 cursor-not-allowed' : ''}`}
+                                    className={`px-6 py-2 bg-foreground text-background text-sm font-medium rounded-[10px] hover:opacity-90 transition-colors flex items-center gap-2 cursor-pointer ${isLoading ? 'opacity-50 cursor-not-allowed' : ''}`}
                                     title="Process URL"
                                 >
                                     {isLoading ? (
-                                        <div className="w-4 h-4 border-2 border-black/30 border-t-black rounded-full animate-spin" />
+                                        <div className="w-4 h-4 border-2 border-background/30 border-t-background rounded-full animate-spin" />
                                     ) : (
                                         <Play className="w-4 h-4" />
                                     )}
@@ -140,7 +140,7 @@ export default function ScriptExtractPage({ params }: { params: Promise<{}> }) {
                                         setVideoUrl('');
                                         setError(null);
                                     }}
-                                    className="px-4 py-2 bg-white/5 border border-white/10 text-gray-300 text-sm font-medium rounded-[10px] hover:bg-white/10 transition-colors flex items-center gap-2 cursor-pointer"
+                                    className="px-4 py-2 bg-foreground/5 border border-border text-muted text-sm font-medium rounded-[10px] hover:bg-foreground/10 transition-colors flex items-center gap-2 cursor-pointer"
                                     title="Clear Input"
                                 >
                                     Clear
@@ -150,16 +150,16 @@ export default function ScriptExtractPage({ params }: { params: Promise<{}> }) {
 
                         {/* Extraction Tips */}
                         <div className="bg-purple-500/10 p-6 rounded-[15px] border border-purple-500/20">
-                            <h2 className="text-lg font-semibold mb-2 flex items-center gap-2 text-purple-300">
+                            <h2 className="text-lg font-semibold mb-2 flex items-center gap-2 text-purple-300 dark:text-purple-300">
                                 <Info className="w-5 h-5" />
                                 Extraction Rules
                             </h2>
                             <ul className="space-y-3">
-                                <li className="flex items-start gap-2 text-xs text-purple-200/70">
+                                <li className="flex items-start gap-2 text-xs text-purple-800/70 dark:text-purple-200/70">
                                     <CheckCircle2 className="w-3 h-3 mt-0.5 flex-shrink-0" />
                                     Duration must not exceed 10 minutes.
                                 </li>
-                                <li className="flex items-start gap-2 text-xs text-purple-200/70">
+                                <li className="flex items-start gap-2 text-xs text-purple-800/70 dark:text-purple-200/70">
                                     <AlertCircle className="w-3 h-3 mt-0.5 flex-shrink-0" />
                                     Videos without available transcripts or due to copyright protection cannot be extracted.
                                 </li>
@@ -169,15 +169,15 @@ export default function ScriptExtractPage({ params }: { params: Promise<{}> }) {
 
                     {/* Transcript Right Side */}
                     {videoData?.transcript && (
-                        <div className="flex-1 bg-white/5 p-6 rounded-[15px] border border-white/5 w-full flex flex-col" style={{ height: 'calc(100vh - 220px)' }}>
+                        <div className="flex-1 bg-card p-6 rounded-[15px] border border-border w-full flex flex-col" style={{ height: 'calc(100vh - 220px)' }}>
                             <div className="flex justify-between items-center mb-6 shrink-0">
-                                <h2 className="text-lg font-semibold flex items-center gap-2 text-white">
+                                <h2 className="text-lg font-semibold flex items-center gap-2 text-foreground">
                                     Transcript
                                 </h2>
                                 <div className="flex gap-2">
                                     <button
                                         onClick={() => setShowTimestamps(!showTimestamps)}
-                                        className="px-3 py-1.5 bg-white/5 border border-white/10 text-gray-300 text-xs font-medium rounded-[8px] hover:bg-white/10 transition-colors flex items-center gap-1.5 cursor-pointer shadow-sm"
+                                        className="px-3 py-1.5 bg-foreground/5 border border-border text-muted text-xs font-medium rounded-[8px] hover:bg-foreground/10 transition-colors flex items-center gap-1.5 cursor-pointer shadow-sm"
                                     >
                                         <Clock className="w-3.5 h-3.5" />
                                         {showTimestamps ? 'Hide Times' : 'Show Times'}
@@ -199,14 +199,14 @@ export default function ScriptExtractPage({ params }: { params: Promise<{}> }) {
                                                 {item.timestamp}
                                             </span>
                                         )}
-                                        <p className="text-xs text-gray-300 leading-relaxed pt-0.5 group-hover:text-white transition-colors">{item.text}</p>
+                                        <p className="text-xs text-muted leading-relaxed pt-0.5 group-hover:text-foreground transition-colors">{item.text}</p>
                                     </div>
                                 ))}
                             </div>
                         </div>
                     )}
                 </div>
-                <div className="mt-4 pb-16 text-xs text-gray-500 font-medium text-left">
+                <div className="mt-4 pb-16 text-xs text-muted font-medium text-left">
                     Note: Prismo AI can make mistakes. Please verify important information.
                 </div>
             </div>

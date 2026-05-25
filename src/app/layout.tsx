@@ -3,6 +3,7 @@ import { Geist, Geist_Mono } from "next/font/google";
 import "./globals.css";
 import Sidebar from "../components/sidebar";
 import { createClient } from "@/utils/supabase/server";
+import { ThemeProvider } from "@/components/themeProvider";
 
 const geistSans = Geist({
   variable: "--font-geist-sans",
@@ -31,16 +32,18 @@ export default async function RootLayout({
   const { data: { user } } = await supabase.auth.getUser();
 
   return (
-    <html lang="en">
+    <html lang="en" suppressHydrationWarning>
       <body
-        className={`${geistSans.variable} ${geistMono.variable} antialiased bg-[#08090D] text-white h-screen overflow-hidden`}
+        className={`${geistSans.variable} ${geistMono.variable} antialiased bg-background text-foreground h-screen overflow-hidden`}
       >
-        <div className="flex h-screen w-screen overflow-hidden">
-          {user && <Sidebar />}
-          <main className="flex-1 flex flex-col overflow-y-auto bg-[#08090D]">
-            {children}
-          </main>
-        </div>
+        <ThemeProvider attribute="class" defaultTheme="dark" enableSystem disableTransitionOnChange>
+          <div className="flex h-screen w-screen overflow-hidden">
+            {user && <Sidebar />}
+            <main className="flex-1 flex flex-col overflow-y-auto bg-background">
+              {children}
+            </main>
+          </div>
+        </ThemeProvider>
       </body>
     </html>
   );

@@ -37,7 +37,7 @@ export default function LoginPage() {
   }
 
   return (
-    <div className="min-h-screen bg-[#08080A] text-white flex flex-col items-center relative font-sans overflow-x-hidden">
+    <div className="min-h-screen bg-background text-foreground flex flex-col items-center relative font-sans overflow-x-hidden">
       {/* Background Decorative Gradients */}
       <div className="absolute top-[-10%] left-[-10%] w-[50vw] h-[50vw] max-w-[600px] max-h-[600px] rounded-full bg-violet-600/20 blur-[120px] animate-pulse"></div>
       <div
@@ -61,17 +61,17 @@ export default function LoginPage() {
           </div>
 
           {/* Login Card */}
-          <div className="bg-white/5 backdrop-blur-xl border border-white/10 p-8 rounded-3xl shadow-2xl">
+          <div className="bg-card backdrop-blur-xl border border-border p-8 rounded-3xl shadow-2xl">
             <div className="flex flex-col space-y-6">
 
               <div className="space-y-4">
                 <button
                   onClick={handleGoogleLogin}
                   disabled={isLoading}
-                  className="cursor-pointer group relative w-full flex items-center justify-center space-x-3 bg-white text-gray-900 py-3.5 px-4 rounded-xl font-semibold transition-all hover:bg-gray-100 hover:scale-[1.02] active:scale-[0.98] disabled:opacity-70 disabled:hover:scale-100 disabled:cursor-not-allowed"
+                  className="cursor-pointer group relative w-full flex items-center justify-center space-x-3 bg-foreground text-background py-3.5 px-4 rounded-xl font-semibold transition-all hover:opacity-90 hover:scale-[1.02] active:scale-[0.98] disabled:opacity-70 disabled:hover:scale-100 disabled:cursor-not-allowed"
                 >
                   {isLoading ? (
-                    <div className="w-5 h-5 border-2 border-gray-400 border-t-gray-900 rounded-full animate-spin"></div>
+                    <div className="w-5 h-5 border-2 border-background/40 border-t-background rounded-full animate-spin"></div>
                   ) : (
                     <>
                       <Chrome className="w-5 h-5 text-[#4285F4]" />
@@ -79,7 +79,7 @@ export default function LoginPage() {
                     </>
                   )}
                   {/* Subtle outer glow effect on hover */}
-                  <div className="absolute inset-0 rounded-xl ring-2 ring-white/40 opacity-0 group-hover:opacity-100 transition-opacity"></div>
+                  <div className="absolute inset-0 rounded-xl ring-2 ring-foreground/40 opacity-0 group-hover:opacity-100 transition-opacity"></div>
                 </button>
               </div>
 
@@ -90,7 +90,7 @@ export default function LoginPage() {
               )}
 
               <div className="mt-8 text-center">
-                <p className="text-sm text-gray-500">
+                <p className="text-sm text-muted">
                   By signing in, you agree to our{' '}
                   <a href="#" className="text-violet-400 hover:text-violet-300 transition-colors underline underline-offset-4">Terms of Service</a>
                   {' '}and{' '}
