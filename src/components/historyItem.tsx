@@ -10,6 +10,7 @@ export interface HistoryItemProps {
     date: string;
 }
 
+
 export default function HistoryItem({ id, action, output, date }: HistoryItemProps) {
     const router = useRouter();
 
@@ -18,7 +19,7 @@ export default function HistoryItem({ id, action, output, date }: HistoryItemPro
     };
 
     return (
-        <tr 
+        <tr
             onClick={handleRowClick}
             className="hover:bg-foreground/[0.03] border-b border-border last:border-0 transition-colors duration-200 group cursor-pointer outline-none focus:outline-none select-none"
         >
