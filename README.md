@@ -19,7 +19,7 @@
 
 ## 📖 About
 
-Prismo AI is a web application that extracts transcripts from YouTube videos and shorts, then processes them using AI-powered tools. It provides a suite of text processing features including transcript cleanup, paraphrasing with tone control, and multi-language translation — all within a clean, modern dashboard interface.
+Prismo AI is a desktop web application that extracts transcripts from YouTube videos and shorts, then processes them using AI-powered tools. It provides a suite of text processing features including transcript cleanup, paraphrasing with tone control, and multi-language translation — all within a clean, modern dashboard interface.
 
 ---
 
