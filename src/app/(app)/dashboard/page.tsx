@@ -56,7 +56,7 @@ export default function DashboardPage({ params }: { params?: Promise<any> } = {}
     ];
 
     return (
-        <div className="flex-1 p-4 md:p-8 overflow-y-auto h-full">
+        <div className="flex-1 p-4 md:p-8 pb-16 md:pb-20 overflow-y-auto h-full">
             <div className="space-y-8">
                 <div className="flex items-center justify-between">
                     <div>

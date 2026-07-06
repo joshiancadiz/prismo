@@ -5,7 +5,7 @@ import HistoryTable from '@/components/historyTable';
 
 export default function HistoryPage() {
     return (
-        <div className="flex-1 p-4 md:p-8 overflow-y-auto h-full text-foreground">
+        <div className="flex-1 p-4 md:p-8 pb-16 md:pb-20 overflow-y-auto h-full text-foreground">
             <div className="space-y-8">
                 <div>
                     <h1 className="text-2xl md:text-3xl font-bold text-foreground">History</h1>

@@ -84,7 +84,7 @@ export default function ScriptExtractPage({ params }: { params: Promise<{}> }) {
 
 
     return (
-        <div className="flex-1 p-4 md:p-8 overflow-y-auto h-full text-foreground">
+        <div className="flex-1 p-4 md:p-8 pb-16 md:pb-20 overflow-y-auto h-full text-foreground">
             <div className="space-y-8">
                 <div className="flex justify-between items-start">
                     <div>
