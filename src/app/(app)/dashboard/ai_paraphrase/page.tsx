@@ -75,7 +75,7 @@ export default function AIParaphrasePage() {
 
     return (
         <div className="flex-1 p-4 md:p-8 pb-16 md:pb-20 overflow-y-auto h-full text-foreground">
-            <div className="max-w-7xl mx-auto h-full flex flex-col">
+            <div className="max-w-7xl mx-auto">
                 {/* Header */}
                 <div className="mb-8">
                     <div className="flex items-center gap-3 mb-2">

@@ -92,7 +92,7 @@ export default function AITranslatePage() {
 
     return (
         <div className="flex-1 p-4 md:p-8 pb-16 md:pb-20 overflow-y-auto h-full text-foreground">
-            <div className="max-w-7xl mx-auto h-full flex flex-col">
+            <div className="max-w-7xl mx-auto">
 
                 {/* Header */}
                 <div className="mb-6">
