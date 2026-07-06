@@ -37,7 +37,7 @@ export default function LoginPage() {
   }
 
   return (
-    <div className="min-h-screen bg-background text-foreground flex flex-col items-center relative font-sans overflow-x-hidden">
+    <div className="min-h-screen bg-background text-foreground flex flex-col relative font-sans overflow-hidden">
       {/* Background Decorative Gradients */}
       <div className="absolute top-[-10%] left-[-10%] w-[50vw] h-[50vw] max-w-[600px] max-h-[600px] rounded-full bg-violet-600/20 blur-[120px] animate-pulse"></div>
       <div
@@ -46,22 +46,22 @@ export default function LoginPage() {
       ></div>
 
       {/* Main Login Content Area (fills 100% of viewport) */}
-      <div className="min-h-screen flex items-center justify-center w-full p-4 relative z-10">
+      <div className="flex-1 flex items-center justify-center w-full p-4 relative z-10">
         <div className="w-full max-w-md">
           {/* Logo/Brand Area */}
           <div className="flex flex-col items-center mb-10 text-center">
             <img
               src="/prismo-logo.svg"
               alt="Prismo Logo"
-              className="w-40 h-40 mb-6"
+              className="w-28 h-28 md:w-40 md:h-40 mb-6"
             />
-            <h1 className="text-4xl font-extrabold tracking-tight mb-2">
+            <h1 className="text-2xl md:text-4xl font-extrabold tracking-tight mb-2">
               Welcome to <span className="bg-clip-text text-transparent bg-linear-to-r from-red-500 via-yellow-400 via-green-400 via-blue-500 to-purple-600">Prismo AI</span>
             </h1>
           </div>
 
           {/* Login Card */}
-          <div className="bg-card backdrop-blur-xl border border-border p-8 rounded-3xl shadow-2xl">
+          <div className="bg-card backdrop-blur-xl border border-border p-6 md:p-8 rounded-3xl shadow-2xl">
             <div className="flex flex-col space-y-6">
 
               <div className="space-y-4">

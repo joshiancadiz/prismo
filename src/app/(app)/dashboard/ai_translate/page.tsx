@@ -91,19 +91,19 @@ export default function AITranslatePage() {
     };
 
     return (
-        <div className="flex-1 p-8 overflow-y-auto h-full min-h-[calc(100vh-40px)] text-foreground">
+        <div className="flex-1 p-4 md:p-8 overflow-y-auto h-full text-foreground">
             <div className="max-w-7xl mx-auto h-full flex flex-col">
 
                 {/* Header */}
                 <div className="mb-6">
                     <div className="flex items-center gap-3 mb-2">
-                        <h1 className="text-3xl font-bold text-foreground">AI Translate</h1>
+                        <h1 className="text-2xl md:text-3xl font-bold text-foreground">AI Translate</h1>
                     </div>
                     <p className="text-muted">Translate your content into any language with AI-powered precision.</p>
                 </div>
 
                 {/* Language Selector Bar */}
-                <div className="flex items-center gap-3 mb-6 p-4 bg-card border border-border rounded-[16px]">
+                <div className="flex items-center gap-2 md:gap-3 mb-6 p-3 md:p-4 bg-card border border-border rounded-[16px]">
                     {/* From Language */}
                     <div className="flex-1 relative">
                         <label className="block text-[10px] font-bold uppercase tracking-widest text-muted mb-1 px-1">
@@ -166,10 +166,10 @@ export default function AITranslatePage() {
                 </div>
 
                 {/* Text Areas */}
-                <div className="flex-1 grid grid-cols-1 lg:grid-cols-2 gap-6 min-h-[450px]">
+                <div className="flex-1 grid grid-cols-1 lg:grid-cols-2 gap-6 min-h-[300px] md:min-h-[450px]">
 
                     {/* Input Side */}
-                    <div className="flex flex-col h-full">
+                    <div className="flex flex-col h-full min-h-[250px] md:min-h-0">
                         <div className="flex items-center justify-between mb-3 px-1">
                             <label className="text-sm font-semibold text-foreground flex items-center gap-2">
                                 Original Text
@@ -222,7 +222,7 @@ export default function AITranslatePage() {
                     </div>
 
                     {/* Output Side */}
-                    <div className="flex flex-col h-full">
+                    <div className="flex flex-col h-full min-h-[250px] md:min-h-0">
                         <div className="flex items-center justify-between mb-3 px-1">
                             <label className="text-sm font-semibold text-foreground flex items-center gap-2">
                                 Translation

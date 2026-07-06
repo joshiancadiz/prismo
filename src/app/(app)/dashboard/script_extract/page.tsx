@@ -84,11 +84,11 @@ export default function ScriptExtractPage({ params }: { params: Promise<{}> }) {
 
 
     return (
-        <div className="flex-1 p-8 overflow-y-auto h-full text-foreground">
+        <div className="flex-1 p-4 md:p-8 overflow-y-auto h-full text-foreground">
             <div className="space-y-8">
                 <div className="flex justify-between items-start">
                     <div>
-                        <h1 className="text-3xl font-bold text-foreground">Script Extractor</h1>
+                        <h1 className="text-2xl md:text-3xl font-bold text-foreground">Script Extractor</h1>
                         <p className="text-muted mt-2">Extract precise text, captions, and insights from Youtube videos and shorts.</p>
                     </div>
                     <div className="flex gap-2">
@@ -113,7 +113,7 @@ export default function ScriptExtractPage({ params }: { params: Promise<{}> }) {
                                 <LinkIcon className="w-5 h-5 text-blue-400" />
                                 Paste Video URL
                             </h2>
-                            <div className="flex gap-2">
+                            <div className="flex flex-col sm:flex-row gap-2">
                                 <input
                                     type="text"
                                     className="flex-1 p-3 bg-foreground/5 border border-border rounded-[10px] text-sm focus:outline-none focus:ring-2 focus:ring-blue-500/20 transition-all text-foreground placeholder-muted/50"
@@ -169,7 +169,7 @@ export default function ScriptExtractPage({ params }: { params: Promise<{}> }) {
 
                     {/* Transcript Right Side */}
                     {videoData?.transcript && (
-                        <div className="flex-1 bg-card p-6 rounded-[15px] border border-border w-full flex flex-col" style={{ height: 'calc(100vh - 220px)' }}>
+                        <div className="flex-1 bg-card p-4 md:p-6 rounded-[15px] border border-border w-full flex flex-col" style={{ height: 'calc(100vh - 220px)', minHeight: '300px' }}>
                             <div className="flex justify-between items-center mb-6 shrink-0">
                                 <h2 className="text-lg font-semibold flex items-center gap-2 text-foreground">
                                     Transcript

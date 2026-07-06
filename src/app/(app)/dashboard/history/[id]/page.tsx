@@ -30,7 +30,7 @@ export default function HistoryDetailPage({ params }: { params: Promise<{ id: st
 
     if (loading) {
         return (
-            <div className="flex-1 p-8 text-foreground flex items-center justify-center">
+            <div className="flex-1 p-4 md:p-8 text-foreground flex items-center justify-center">
                 <div className="w-8 h-8 border-2 border-blue-500/30 border-t-blue-500 rounded-full animate-spin" />
             </div>
         );
@@ -38,7 +38,7 @@ export default function HistoryDetailPage({ params }: { params: Promise<{ id: st
 
     if (!record) {
         return (
-            <div className="flex-1 p-8 text-foreground text-center">
+            <div className="flex-1 p-4 md:p-8 text-foreground text-center">
                 <p className="text-muted">Record not found.</p>
                 <button
                     onClick={() => router.back()}
@@ -53,7 +53,7 @@ export default function HistoryDetailPage({ params }: { params: Promise<{ id: st
 
 
     return (
-        <div className="flex-1 p-8 overflow-y-auto h-full text-foreground">
+        <div className="flex-1 p-4 md:p-8 overflow-y-auto h-full text-foreground">
             <div className="max-w-5xl mx-auto space-y-8">
                 {/* Header */}
                 <div className="flex flex-col gap-6">
@@ -67,7 +67,7 @@ export default function HistoryDetailPage({ params }: { params: Promise<{ id: st
 
                     <div className="flex items-start justify-between">
                         <div>
-                            <h1 className="text-3xl font-bold capitalize mb-2">{record.action}</h1>
+                            <h1 className="text-2xl md:text-3xl font-bold capitalize mb-2">{record.action}</h1>
                             <div className="flex items-center gap-2 text-muted text-sm">
                                 <Calendar className="w-4 h-4" />
                                 {new Date(record.created_at).toLocaleDateString('en-US', {

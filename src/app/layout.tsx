@@ -1,8 +1,6 @@
 import type { Metadata } from "next";
 import { Geist, Geist_Mono } from "next/font/google";
 import "./globals.css";
-import Sidebar from "../components/sidebar";
-import { createClient } from "@/utils/supabase/server";
 import { ThemeProvider } from "@/components/themeProvider";
 
 const geistSans = Geist({
@@ -23,28 +21,21 @@ export const metadata: Metadata = {
   },
 };
 
-export default async function RootLayout({
+export default function RootLayout({
   children,
 }: Readonly<{
   children: React.ReactNode;
 }>) {
-  const supabase = await createClient();
-  const { data: { user } } = await supabase.auth.getUser();
-
   return (
     <html lang="en" suppressHydrationWarning>
       <body
-        className={`${geistSans.variable} ${geistMono.variable} antialiased bg-background text-foreground h-screen overflow-hidden`}
+        className={`${geistSans.variable} ${geistMono.variable} antialiased bg-background text-foreground`}
       >
         <ThemeProvider attribute="class" defaultTheme="dark" enableSystem disableTransitionOnChange>
-          <div className="flex h-screen w-screen overflow-hidden">
-            {user && <Sidebar />}
-            <main className="flex-1 flex flex-col overflow-y-auto bg-background">
-              {children}
-            </main>
-          </div>
+          {children}
         </ThemeProvider>
       </body>
     </html>
   );
 }
+

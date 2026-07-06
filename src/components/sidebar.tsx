@@ -1,6 +1,6 @@
 "use client";
 
-import React from 'react';
+import React, { useEffect } from 'react';
 import Link from 'next/link';
 import { usePathname } from 'next/navigation';
 import Image from 'next/image';
@@ -14,7 +14,9 @@ import {
     Languages,
     PanelLeftClose,
     PanelLeft,
-    Settings
+    Settings,
+    Menu,
+    X
 } from 'lucide-react';
 
 const navItems = [
@@ -41,9 +43,27 @@ const Sidebar = () => {
     const pathname = usePathname();
     const [isAIToolsOpen, setIsAIToolsOpen] = React.useState(false);
     const [isCollapsed, setIsCollapsed] = React.useState(false);
+    const [isMobileOpen, setIsMobileOpen] = React.useState(false);
 
-    return (
-        <aside className={`${isCollapsed ? 'w-[80px]' : 'w-64'} bg-background h-screen transition-[width] duration-300 border-r border-border flex flex-col z-50 overflow-hidden shadow-xl`}>
+    // Close mobile drawer on route change
+    useEffect(() => {
+        setIsMobileOpen(false);
+    }, [pathname]);
+
+    // Prevent body scroll when mobile drawer is open
+    useEffect(() => {
+        if (isMobileOpen) {
+            document.body.style.overflow = 'hidden';
+        } else {
+            document.body.style.overflow = '';
+        }
+        return () => {
+            document.body.style.overflow = '';
+        };
+    }, [isMobileOpen]);
+
+    const sidebarContent = (
+        <>
             <div className="p-6 flex items-end justify-between overflow-hidden">
                 {!isCollapsed && (
                     <div className="flex items-end gap-3 whitespace-nowrap overflow-hidden">
@@ -66,11 +86,24 @@ const Sidebar = () => {
                         className="w-6 h-6 shrink-0"
                     />
                 )}
+                {/* Desktop: collapse toggle | Mobile: close button */}
                 <button
-                    onClick={() => setIsCollapsed(!isCollapsed)}
+                    onClick={() => {
+                        // On mobile, close the drawer
+                        if (window.innerWidth < 768) {
+                            setIsMobileOpen(false);
+                        } else {
+                            setIsCollapsed(!isCollapsed);
+                        }
+                    }}
                     className="p-1 hover:bg-foreground/5 rounded-md text-muted hover:text-foreground transition-colors cursor-pointer shrink-0 ml-auto"
                 >
-                    {isCollapsed ? <PanelLeft className="w-5 h-5" /> : <PanelLeftClose className="w-5 h-5" />}
+                    <span className="hidden md:block">
+                        {isCollapsed ? <PanelLeft className="w-5 h-5" /> : <PanelLeftClose className="w-5 h-5" />}
+                    </span>
+                    <span className="block md:hidden">
+                        <X className="w-5 h-5" />
+                    </span>
                 </button>
             </div>
 
@@ -156,7 +189,53 @@ const Sidebar = () => {
                     </ul>
                 </div>
             </nav>
-        </aside>
+        </>
+    );
+
+    return (
+        <>
+            {/* Mobile: Top Bar with Hamburger */}
+            <div className="md:hidden fixed top-0 left-0 right-0 z-40 bg-background/80 backdrop-blur-xl border-b border-border px-4 py-3 flex items-center gap-3">
+                <button
+                    onClick={() => setIsMobileOpen(true)}
+                    className="p-2 hover:bg-foreground/5 rounded-lg text-foreground transition-colors cursor-pointer"
+                >
+                    <Menu className="w-5 h-5" />
+                </button>
+                <div className="flex items-center gap-2">
+                    <Image
+                        src="/prismo-logo.svg"
+                        alt="Prismo Logo"
+                        width={20}
+                        height={20}
+                        className="w-5 h-5"
+                    />
+                    <span className="font-semibold text-foreground text-sm">Prismo AI</span>
+                </div>
+            </div>
+
+            {/* Mobile: Overlay */}
+            {isMobileOpen && (
+                <div
+                    className="md:hidden fixed inset-0 z-[60] bg-black/50 backdrop-blur-sm transition-opacity"
+                    onClick={() => setIsMobileOpen(false)}
+                />
+            )}
+
+            {/* Mobile: Drawer */}
+            <aside
+                className={`md:hidden fixed top-0 left-0 h-screen w-72 bg-background border-r border-border flex flex-col z-[70] shadow-2xl transition-transform duration-300 ease-in-out ${isMobileOpen ? 'translate-x-0' : '-translate-x-full'
+                    }`}
+            >
+                {/* On mobile, never show collapsed state */}
+                {sidebarContent}
+            </aside>
+
+            {/* Desktop: Standard Sidebar */}
+            <aside className={`hidden md:flex ${isCollapsed ? 'w-[80px]' : 'w-64'} bg-background h-screen transition-[width] duration-300 border-r border-border flex-col z-50 overflow-hidden shadow-xl`}>
+                {sidebarContent}
+            </aside>
+        </>
     );
 };
 

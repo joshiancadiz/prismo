@@ -81,7 +81,7 @@ export default function HistoryTable() {
         .sort((a, b) => sortDesc ? b.rawDate - a.rawDate : a.rawDate - b.rawDate);
 
     return (
-        <div className="w-full bg-card rounded-[15px] border border-border shadow-2xl backdrop-blur-sm">
+        <div className="w-full bg-card rounded-[15px] border border-border shadow-2xl backdrop-blur-sm overflow-x-auto">
             <table className="w-full text-left border-collapse">
                 <thead className="bg-foreground/5 border-b border-border overflow-visible rounded-t-[15px]">
                     <tr className="overflow-visible">

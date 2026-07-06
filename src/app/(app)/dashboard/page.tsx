@@ -56,25 +56,25 @@ export default function DashboardPage({ params }: { params?: Promise<any> } = {}
     ];
 
     return (
-        <div className="flex-1 p-8 overflow-y-auto h-full">
+        <div className="flex-1 p-4 md:p-8 overflow-y-auto h-full">
             <div className="space-y-8">
                 <div className="flex items-center justify-between">
                     <div>
-                        <h1 className="text-3xl font-bold text-foreground">Dashboard Overview</h1>
+                        <h1 className="text-2xl md:text-3xl font-bold text-foreground">Dashboard Overview</h1>
                         <p className="text-muted mt-2">Welcome back to Prismo AI. Here&apos;s what&apos;s happening today.</p>
                     </div>
                 </div>
  
-                <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
+                <div className="grid grid-cols-2 md:grid-cols-2 lg:grid-cols-4 gap-3 md:gap-6">
                     {stats.map((stat) => (
-                        <div key={stat.name} className="p-6 bg-card rounded-[15px] border border-border hover:border-foreground/10 hover:shadow-sm transition-all group">
+                        <div key={stat.name} className="p-4 md:p-6 bg-card rounded-[15px] border border-border hover:border-foreground/10 hover:shadow-sm transition-all group">
                             <div className="flex items-center justify-between mb-4">
-                                <stat.icon className={`w-8 h-8 ${stat.color} transition-transform group-hover:scale-110`} />
+                                <stat.icon className={`w-6 h-6 md:w-8 md:h-8 ${stat.color} transition-transform group-hover:scale-110`} />
                                 <span className="text-2xl font-bold text-foreground">
                                     {loading ? <Loader2 className="w-5 h-5 animate-spin" /> : stat.value}
                                 </span>
                             </div>
-                            <h3 className="text-sm font-medium text-muted">{stat.name}</h3>
+                            <h3 className="text-xs md:text-sm font-medium text-muted">{stat.name}</h3>
                         </div>
                     ))}
                 </div>
