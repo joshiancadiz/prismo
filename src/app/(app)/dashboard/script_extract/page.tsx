@@ -1,6 +1,6 @@
 "use client";
 
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { Play, Info, CheckCircle2, AlertCircle, Link as LinkIcon, Instagram, Youtube, Clapperboard, Copy, Clock, Check, X } from 'lucide-react';
 // import { extractYoutubeId } from '@/app/lib/youtube/parse';
 import { saveHistory } from '@/lib/supabase/updateHistory';
@@ -9,6 +9,21 @@ import { createClient } from '@/utils/supabase/client';
 export default function ScriptExtractPage({ params }: { params: Promise<{}> }) {
     const [videoUrl, setVideoUrl] = useState('');
     const [error, setError] = useState<string | null>(null);
+
+    useEffect(() => {
+        const saved = sessionStorage.getItem('prismo_draft_script_extract_video_url');
+        if (saved) {
+            setVideoUrl(saved);
+        }
+        const savedData = sessionStorage.getItem('prismo_draft_script_extract_video_data');
+        if (savedData) {
+            try {
+                setVideoData(JSON.parse(savedData));
+            } catch (e) {
+                console.error('Failed to parse videoData from sessionStorage', e);
+            }
+        }
+    }, []);
     const [isLoading, setIsLoading] = useState(false);
     const [videoData, setVideoData] = useState<any | null>(null);
     const [showTimestamps, setShowTimestamps] = useState(true);
@@ -17,6 +32,7 @@ export default function ScriptExtractPage({ params }: { params: Promise<{}> }) {
     const handleProcessUrl = async () => {
         setError(null);
         setVideoData(null);
+        sessionStorage.removeItem('prismo_draft_script_extract_video_data');
         setCopied(false);
         const url = videoUrl.trim();
 
@@ -49,6 +65,7 @@ export default function ScriptExtractPage({ params }: { params: Promise<{}> }) {
 
             console.log('Video processed successfully:', data);
             setVideoData(data);
+            sessionStorage.setItem('prismo_draft_script_extract_video_data', JSON.stringify(data));
 
             // Save to history
             const supabase = createClient();
@@ -119,7 +136,10 @@ export default function ScriptExtractPage({ params }: { params: Promise<{}> }) {
                                     className="flex-1 p-3 bg-foreground/5 border border-border rounded-[10px] text-sm focus:outline-none focus:ring-2 focus:ring-blue-500/20 transition-all text-foreground placeholder-muted/50"
                                     placeholder="https://www.youtube.com/shorts/..."
                                     value={videoUrl}
-                                    onChange={(e) => setVideoUrl(e.target.value)}
+                                    onChange={(e) => {
+                                        setVideoUrl(e.target.value);
+                                        sessionStorage.setItem('prismo_draft_script_extract_video_url', e.target.value);
+                                    }}
                                     onKeyDown={(e) => e.key === 'Enter' && handleProcessUrl()}
                                 />
                                 <button
@@ -138,6 +158,9 @@ export default function ScriptExtractPage({ params }: { params: Promise<{}> }) {
                                 <button
                                     onClick={() => {
                                         setVideoUrl('');
+                                        sessionStorage.removeItem('prismo_draft_script_extract_video_url');
+                                        setVideoData(null);
+                                        sessionStorage.removeItem('prismo_draft_script_extract_video_data');
                                         setError(null);
                                     }}
                                     className="px-4 py-2 bg-foreground/5 border border-border text-muted text-sm font-medium rounded-[10px] hover:bg-foreground/10 transition-colors flex items-center gap-2 cursor-pointer"

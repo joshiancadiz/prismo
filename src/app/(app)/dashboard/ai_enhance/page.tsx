@@ -1,6 +1,6 @@
 "use client";
 
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { Wand2, Copy, Trash2, ArrowRight } from 'lucide-react';
 import { saveHistory } from '@/lib/supabase/updateHistory';
 import { createClient } from '@/utils/supabase/client';
@@ -10,11 +10,23 @@ export default function AIEnhancePage() {
     const [resultText, setResultText] = useState("");
     const [isEnhancing, setIsEnhancing] = useState(false);
 
+    useEffect(() => {
+        const saved = sessionStorage.getItem('prismo_draft_ai_enhance_input_text');
+        if (saved) {
+            setInputText(saved);
+        }
+        const savedResult = sessionStorage.getItem('prismo_draft_ai_enhance_result_text');
+        if (savedResult) {
+            setResultText(savedResult);
+        }
+    }, []);
+
     const handleEnhance = async () => {
         if (!inputText.trim()) return;
 
         setIsEnhancing(true);
         setResultText("");
+        sessionStorage.removeItem('prismo_draft_ai_enhance_result_text');
 
         try {
             const response = await fetch('/api/enhance', {
@@ -26,11 +38,14 @@ export default function AIEnhancePage() {
             const data = await response.json();
 
             if (!response.ok) {
-                setResultText(`Error: ${data.error || 'Something went wrong.'}`);
+                const errMsg = `Error: ${data.error || 'Something went wrong.'}`;
+                setResultText(errMsg);
+                sessionStorage.setItem('prismo_draft_ai_enhance_result_text', errMsg);
                 return;
             }
 
             setResultText(data.enhancedText);
+            sessionStorage.setItem('prismo_draft_ai_enhance_result_text', data.enhancedText);
 
             // Save to history
             const supabase = createClient();
@@ -44,7 +59,9 @@ export default function AIEnhancePage() {
                 });
             }
         } catch (error) {
-            setResultText("Error: Failed to connect to the enhancement service.");
+            const errMsg = "Error: Failed to connect to the enhancement service.";
+            setResultText(errMsg);
+            sessionStorage.setItem('prismo_draft_ai_enhance_result_text', errMsg);
         } finally {
             setIsEnhancing(false);
         }
@@ -52,7 +69,9 @@ export default function AIEnhancePage() {
 
     const handleClear = () => {
         setInputText("");
+        sessionStorage.removeItem('prismo_draft_ai_enhance_input_text');
         setResultText("");
+        sessionStorage.removeItem('prismo_draft_ai_enhance_result_text');
     };
 
     const handleCopy = () => {
@@ -91,7 +110,10 @@ export default function AIEnhancePage() {
                         <div className="relative flex-1 group">
                             <textarea
                                 value={inputText}
-                                onChange={(e) => setInputText(e.target.value)}
+                                onChange={(e) => {
+                                    setInputText(e.target.value);
+                                    sessionStorage.setItem('prismo_draft_ai_enhance_input_text', e.target.value);
+                                }}
                                 placeholder="Paste your script or content here..."
                                 className="w-full h-full p-6 bg-card border border-border rounded-[20px] focus:outline-none focus:ring-2 focus:ring-blue-500/20 focus:border-blue-500/50 transition-all resize-none text-foreground placeholder:text-muted/50"
                             />

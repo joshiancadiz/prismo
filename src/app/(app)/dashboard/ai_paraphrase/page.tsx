@@ -1,6 +1,6 @@
 "use client";
 
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { Copy, Trash2, ArrowRight, Shuffle } from 'lucide-react';
 import { saveHistory } from '@/lib/supabase/updateHistory';
 import { createClient } from '@/utils/supabase/client';
@@ -22,11 +22,27 @@ export default function AIParaphrasePage() {
     const [isParaphrasing, setIsParaphrasing] = useState(false);
     const [selectedTone, setSelectedTone] = useState("Casual");
 
+    useEffect(() => {
+        const savedText = sessionStorage.getItem('prismo_draft_ai_paraphrase_input_text');
+        if (savedText) {
+            setInputText(savedText);
+        }
+        const savedTone = sessionStorage.getItem('prismo_draft_ai_paraphrase_selected_tone');
+        if (savedTone) {
+            setSelectedTone(savedTone);
+        }
+        const savedResult = sessionStorage.getItem('prismo_draft_ai_paraphrase_result_text');
+        if (savedResult) {
+            setResultText(savedResult);
+        }
+    }, []);
+
     const handleParaphrase = async () => {
         if (!inputText.trim()) return;
 
         setIsParaphrasing(true);
         setResultText("");
+        sessionStorage.removeItem('prismo_draft_ai_paraphrase_result_text');
 
         try {
             const response = await fetch('/api/paraphrase', {
@@ -38,11 +54,14 @@ export default function AIParaphrasePage() {
             const data = await response.json();
 
             if (!response.ok) {
-                setResultText(`Error: ${data.error || 'Something went wrong.'}`);
+                const errMsg = `Error: ${data.error || 'Something went wrong.'}`;
+                setResultText(errMsg);
+                sessionStorage.setItem('prismo_draft_ai_paraphrase_result_text', errMsg);
                 return;
             }
 
             setResultText(data.paraphrasedText);
+            sessionStorage.setItem('prismo_draft_ai_paraphrase_result_text', data.paraphrasedText);
 
             // Save to history
             const supabase = createClient();
@@ -56,7 +75,9 @@ export default function AIParaphrasePage() {
                 });
             }
         } catch {
-            setResultText("Error: Failed to connect to the paraphrase service.");
+            const errMsg = "Error: Failed to connect to the paraphrase service.";
+            setResultText(errMsg);
+            sessionStorage.setItem('prismo_draft_ai_paraphrase_result_text', errMsg);
         } finally {
             setIsParaphrasing(false);
         }
@@ -64,7 +85,9 @@ export default function AIParaphrasePage() {
 
     const handleClear = () => {
         setInputText("");
+        sessionStorage.removeItem('prismo_draft_ai_paraphrase_input_text');
         setResultText("");
+        sessionStorage.removeItem('prismo_draft_ai_paraphrase_result_text');
     };
 
     const handleCopy = () => {
@@ -94,7 +117,10 @@ export default function AIParaphrasePage() {
                         {TONES.map((tone) => (
                             <button
                                 key={tone.value}
-                                onClick={() => setSelectedTone(tone.value)}
+                                onClick={() => {
+                                    setSelectedTone(tone.value);
+                                    sessionStorage.setItem('prismo_draft_ai_paraphrase_selected_tone', tone.value);
+                                }}
                                 title={tone.description}
                                 className={`px-4 py-2 rounded-full text-xs font-semibold transition-all border cursor-pointer ${selectedTone === tone.value
                                     ? 'bg-foreground text-background border-foreground shadow-md scale-105'
@@ -127,7 +153,10 @@ export default function AIParaphrasePage() {
                         <div className="relative flex-1 group">
                             <textarea
                                 value={inputText}
-                                onChange={(e) => setInputText(e.target.value)}
+                                onChange={(e) => {
+                                    setInputText(e.target.value);
+                                    sessionStorage.setItem('prismo_draft_ai_paraphrase_input_text', e.target.value);
+                                }}
                                 placeholder="Paste your text here..."
                                 className="w-full h-full p-6 bg-card border border-border rounded-[20px] focus:outline-none focus:ring-2 focus:ring-violet-500/20 focus:border-violet-500/50 transition-all resize-none text-foreground placeholder:text-muted/50"
                             />

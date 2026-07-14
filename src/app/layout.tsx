@@ -14,8 +14,33 @@ const geistMono = Geist_Mono({
 });
 
 export const metadata: Metadata = {
-  title: "Prismo AI",
-  description: "Advanced Content Analysis Platform",
+  title: "Prismo AI — YouTube Transcript Extraction & AI Processing",
+  description:
+    "Extract transcripts from YouTube videos and shorts, then translate, enhance, and paraphrase them with AI. A practical repurposing tool for content creators.",
+  keywords: [
+    "YouTube transcript extractor",
+    "AI transcript tool",
+    "video transcript translation",
+    "content creator tools",
+    "AI paraphrasing",
+    "YouTube shorts transcript",
+  ],
+  openGraph: {
+    title: "Prismo AI — YouTube Transcript & AI Content Tool",
+    description:
+      "Extract, translate, enhance, and paraphrase YouTube transcripts with AI. Best for repurposing content.",
+    url: "https://prismo-ai.vercel.app", // swap for your actual domain
+    siteName: "Prismo AI",
+    images: [
+      {
+        url: "/prismo-image.png",
+        width: 1200,
+        height: 630,
+        alt: "Prismo AI — YouTube Transcript & AI Content Tool",
+      },
+    ],
+    type: "website",
+  },
   icons: {
     icon: "/prismo-logo.svg",
   },

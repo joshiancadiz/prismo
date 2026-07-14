@@ -1,6 +1,6 @@
 "use client";
 
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { Languages, ArrowRightLeft, Copy, Trash2, ArrowRight, ChevronDown } from 'lucide-react';
 import { saveHistory } from '@/lib/supabase/updateHistory';
 import { createClient } from '@/utils/supabase/client';
@@ -29,11 +29,31 @@ export default function AITranslatePage() {
     const [toLanguage, setToLanguage] = useState('English');
     const [copied, setCopied] = useState(false);
 
+    useEffect(() => {
+        const savedText = sessionStorage.getItem('prismo_draft_ai_translate_input_text');
+        if (savedText) {
+            setInputText(savedText);
+        }
+        const savedFrom = sessionStorage.getItem('prismo_draft_ai_translate_from_language');
+        if (savedFrom) {
+            setFromLanguage(savedFrom);
+        }
+        const savedTo = sessionStorage.getItem('prismo_draft_ai_translate_to_language');
+        if (savedTo) {
+            setToLanguage(savedTo);
+        }
+        const savedResult = sessionStorage.getItem('prismo_draft_ai_translate_result_text');
+        if (savedResult) {
+            setResultText(savedResult);
+        }
+    }, []);
+
     const handleTranslate = async () => {
         if (!inputText.trim()) return;
 
         setIsTranslating(true);
         setResultText('');
+        sessionStorage.removeItem('prismo_draft_ai_translate_result_text');
 
         try {
             const response = await fetch('/api/translate', {
@@ -45,11 +65,14 @@ export default function AITranslatePage() {
             const data = await response.json();
 
             if (!response.ok) {
-                setResultText(`Error: ${data.error || 'Something went wrong.'}`);
+                const errMsg = `Error: ${data.error || 'Something went wrong.'}`;
+                setResultText(errMsg);
+                sessionStorage.setItem('prismo_draft_ai_translate_result_text', errMsg);
                 return;
             }
 
             setResultText(data.translatedText);
+            sessionStorage.setItem('prismo_draft_ai_translate_result_text', data.translatedText);
 
             // Save to history
             const supabase = createClient();
@@ -64,7 +87,9 @@ export default function AITranslatePage() {
                 });
             }
         } catch {
-            setResultText('Error: Failed to connect to the translation service.');
+            const errMsg = 'Error: Failed to connect to the translation service.';
+            setResultText(errMsg);
+            sessionStorage.setItem('prismo_draft_ai_translate_result_text', errMsg);
         } finally {
             setIsTranslating(false);
         }
@@ -72,7 +97,9 @@ export default function AITranslatePage() {
 
     const handleClear = () => {
         setInputText('');
+        sessionStorage.removeItem('prismo_draft_ai_translate_input_text');
         setResultText('');
+        sessionStorage.removeItem('prismo_draft_ai_translate_result_text');
     };
 
     const handleCopy = () => {
@@ -87,7 +114,9 @@ export default function AITranslatePage() {
         if (fromLanguage === 'auto') return;
         const prev = fromLanguage;
         setFromLanguage(toLanguage);
+        sessionStorage.setItem('prismo_draft_ai_translate_from_language', toLanguage);
         setToLanguage(prev);
+        sessionStorage.setItem('prismo_draft_ai_translate_to_language', prev);
     };
 
     return (
@@ -113,7 +142,10 @@ export default function AITranslatePage() {
                             <select
                                 id="from-language"
                                 value={fromLanguage}
-                                onChange={(e) => setFromLanguage(e.target.value)}
+                                onChange={(e) => {
+                                    setFromLanguage(e.target.value);
+                                    sessionStorage.setItem('prismo_draft_ai_translate_from_language', e.target.value);
+                                }}
                                 className="w-full appearance-none bg-foreground/5 border border-border rounded-[10px] px-4 py-2.5 pr-9 text-sm font-medium text-foreground focus:outline-none focus:ring-2 focus:ring-indigo-500/20 focus:border-indigo-500/50 transition-all cursor-pointer"
                             >
                                 {FROM_LANGUAGES.map((lang) => (
@@ -151,7 +183,10 @@ export default function AITranslatePage() {
                             <select
                                 id="to-language"
                                 value={toLanguage}
-                                onChange={(e) => setToLanguage(e.target.value)}
+                                onChange={(e) => {
+                                    setToLanguage(e.target.value);
+                                    sessionStorage.setItem('prismo_draft_ai_translate_to_language', e.target.value);
+                                }}
                                 className="w-full appearance-none bg-foreground/5 border border-border rounded-[10px] px-4 py-2.5 pr-9 text-sm font-medium text-foreground focus:outline-none focus:ring-2 focus:ring-indigo-500/20 focus:border-indigo-500/50 transition-all cursor-pointer"
                             >
                                 {LANGUAGES.map((lang) => (
@@ -187,7 +222,10 @@ export default function AITranslatePage() {
                             <textarea
                                 id="translate-input"
                                 value={inputText}
-                                onChange={(e) => setInputText(e.target.value)}
+                                onChange={(e) => {
+                                    setInputText(e.target.value);
+                                    sessionStorage.setItem('prismo_draft_ai_translate_input_text', e.target.value);
+                                }}
                                 placeholder="Paste or type your text here..."
                                 className="w-full h-full p-6 bg-card border border-border rounded-[20px] focus:outline-none focus:ring-2 focus:ring-indigo-500/20 focus:border-indigo-500/50 transition-all resize-none text-foreground placeholder:text-muted/50"
                             />

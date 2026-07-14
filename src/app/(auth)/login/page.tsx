@@ -37,16 +37,18 @@ export default function LoginPage() {
   }
 
   return (
-    <div className="min-h-screen bg-background text-foreground flex flex-col relative font-sans overflow-hidden">
-      {/* Background Decorative Gradients */}
-      <div className="absolute top-[-10%] left-[-10%] w-[50vw] h-[50vw] max-w-[600px] max-h-[600px] rounded-full bg-violet-600/20 blur-[120px] animate-pulse"></div>
-      <div
-        className="absolute bottom-[-10%] right-[-10%] w-[60vw] h-[60vw] max-w-[700px] max-h-[700px] rounded-full bg-blue-600/20 blur-[120px] animate-pulse"
-        style={{ animationDelay: '2s' }}
-      ></div>
+    <div className="min-h-screen bg-background text-foreground flex flex-col relative font-sans">
+      {/* Background Decorative Gradients Container (prevents overflow scrollbars) */}
+      <div className="absolute inset-0 overflow-hidden pointer-events-none z-0">
+        <div className="absolute top-[-10%] left-[-10%] w-[50vw] h-[50vw] max-w-[600px] max-h-[600px] rounded-full bg-violet-600/20 blur-[120px] animate-pulse"></div>
+        <div
+          className="absolute bottom-[-10%] right-[-10%] w-[60vw] h-[60vw] max-w-[700px] max-h-[700px] rounded-full bg-blue-600/20 blur-[120px] animate-pulse"
+          style={{ animationDelay: '2s' }}
+        ></div>
+      </div>
 
       {/* Main Login Content Area (fills 100% of viewport) */}
-      <div className="flex-1 flex items-center justify-center w-full p-4 relative z-10">
+      <div className="min-h-screen flex items-center justify-center w-full p-4 relative z-10">
         <div className="w-full max-w-md">
           {/* Logo/Brand Area */}
           <div className="flex flex-col items-center mb-10 text-center">
