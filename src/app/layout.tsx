@@ -14,6 +14,7 @@ const geistMono = Geist_Mono({
 });
 
 export const metadata: Metadata = {
+  metadataBase: new URL("https://prismo-ai.vercel.app"),
   title: "Prismo AI — YouTube Transcript Extraction & AI Processing",
   description:
     "Extract transcripts from YouTube videos and shorts, then translate, enhance, and paraphrase them with AI. A practical repurposing tool for content creators.",
