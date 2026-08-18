@@ -3,7 +3,6 @@
 import { useState } from 'react'
 import { createClient } from '@/utils/supabase/client'
 import { Chrome, Sparkles } from 'lucide-react'
-import Footer from '@/components/footer'
 
 export default function LoginPage() {
   const [isLoading, setIsLoading] = useState(false)
@@ -104,8 +103,6 @@ export default function LoginPage() {
         </div>
       </div>
 
-      {/* Footer spans full width at the bottom */}
-      <Footer />
     </div>
   )
 }
