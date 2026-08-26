@@ -15,7 +15,7 @@ const geistMono = Geist_Mono({
 
 export const metadata: Metadata = {
   metadataBase: new URL("https://prismo-ai.vercel.app"),
-  title: "Prismo AI — YouTube Transcript Extraction & AI Processing",
+  title: "Prismo AI",
   description:
     "Extract transcripts from YouTube videos and shorts, then translate, enhance, and paraphrase them with AI. A practical repurposing tool for content creators.",
   keywords: [
@@ -27,7 +27,7 @@ export const metadata: Metadata = {
     "YouTube shorts transcript",
   ],
   openGraph: {
-    title: "Prismo AI — YouTube Transcript & AI Content Tool",
+    title: "Prismo AI",
     description:
       "Extract, translate, enhance, and paraphrase YouTube transcripts with AI. Best for repurposing content.",
     url: "https://prismo-ai.vercel.app", // swap for your actual domain

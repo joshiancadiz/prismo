@@ -1,6 +1,6 @@
 "use client";
 
-import React from 'react';
+import React, { Suspense } from 'react';
 import HistoryTable from '@/components/historyTable';
 
 export default function HistoryPage() {
@@ -12,7 +12,13 @@ export default function HistoryPage() {
                     <p className="text-muted mt-2">View and manage your previous script extractions and reports.</p>
                 </div>
 
-                <HistoryTable />
+                <Suspense fallback={
+                    <div className="w-full bg-card rounded-[15px] border border-border p-8 text-center text-muted">
+                        Loading history...
+                    </div>
+                }>
+                    <HistoryTable />
+                </Suspense>
             </div>
         </div>
     );

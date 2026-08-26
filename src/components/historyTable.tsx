@@ -1,18 +1,30 @@
 "use client";
-
+ 
 import React, { useEffect, useState } from 'react';
 import { getHistory, HistoryRecord } from '@/lib/supabase/getHistory';
 import HistoryItem from '@/components/historyItem';
 import { ArrowDown, ArrowUp, ChevronDown } from 'lucide-react';
+import { useSearchParams } from 'next/navigation';
 
 const FILTER_OPTIONS = ['All', 'Enhance', 'Paraphrase', 'Translate', 'Extract'];
 
 export default function HistoryTable() {
+    const searchParams = useSearchParams();
     const [records, setRecords] = useState<{ id: string; action: string; output: string; date: string; rawDate: number }[]>([]);
     const [actionFilter, setActionFilter] = useState<string>('All');
     const [sortDesc, setSortDesc] = useState<boolean>(true);
     const [loading, setLoading] = useState(true);
     const [isDropdownOpen, setIsDropdownOpen] = useState(false);
+
+    useEffect(() => {
+        const filterParam = searchParams.get('filter');
+        if (filterParam) {
+            const capitalized = filterParam.charAt(0).toUpperCase() + filterParam.slice(1).toLowerCase();
+            if (FILTER_OPTIONS.includes(capitalized)) {
+                setActionFilter(capitalized);
+            }
+        }
+    }, [searchParams]);
 
     useEffect(() => {
         async function fetchHistory() {
