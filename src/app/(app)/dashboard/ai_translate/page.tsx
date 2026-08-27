@@ -1,5 +1,6 @@
 "use client";
 
+import { mutate } from 'swr';
 import React, { useState, useEffect } from 'react';
 import { Languages, ArrowRightLeft, Copy, Trash2, ArrowRight, ChevronDown } from 'lucide-react';
 import { saveHistory } from '@/lib/supabase/updateHistory';
@@ -85,6 +86,7 @@ export default function AITranslatePage() {
                     action: "translate",
                     language: toLanguage,
                 });
+                mutate('history');
             }
         } catch {
             const errMsg = 'Error: Failed to connect to the translation service.';
@@ -121,7 +123,7 @@ export default function AITranslatePage() {
 
     return (
         <div className="flex-1 p-4 md:p-8 pb-16 md:pb-20 overflow-y-auto h-full text-foreground">
-            <div className="max-w-7xl mx-auto">
+            <div className="max-w-7xl">
 
                 {/* Header */}
                 <div className="mb-6">

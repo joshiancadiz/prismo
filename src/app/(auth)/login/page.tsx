@@ -38,7 +38,7 @@ export default function LoginPage() {
   }
 
   return (
-    <div className="min-h-screen bg-background text-foreground flex flex-col relative font-sans">
+    <div className="min-h-screen bg-[#14181f] text-foreground flex flex-col relative font-sans">
       {/* Background Decorative Gradients Container (prevents overflow scrollbars) */}
       <div className="absolute inset-0 overflow-hidden pointer-events-none z-0">
         <div className="absolute top-[-10%] left-[-10%] w-[50vw] h-[50vw] max-w-[600px] max-h-[600px] rounded-full bg-violet-600/20 blur-[120px] animate-pulse"></div>
@@ -72,7 +72,7 @@ export default function LoginPage() {
               <button
                 onClick={handleGoogleLogin}
                 disabled={isLoading}
-                className="cursor-pointer group relative w-full flex items-center justify-center space-x-3 bg-foreground text-background py-3.5 px-4 rounded-xl font-semibold transition-all hover:opacity-90 hover:scale-[1.02] active:scale-[0.98] disabled:opacity-70 disabled:hover:scale-100 disabled:cursor-not-allowed shadow-md"
+                className="cursor-pointer group relative w-full flex items-center justify-center space-x-3 bg-foreground text-background py-2.5 px-3 rounded-xl font-semibold transition-all hover:opacity-90 hover:scale-[1.02] active:scale-[0.98] disabled:opacity-70 disabled:hover:scale-100 disabled:cursor-not-allowed shadow-md"
               >
                 {isLoading ? (
                   <div className="w-5 h-5 border-2 border-background/40 border-t-background rounded-full animate-spin"></div>
@@ -107,18 +107,18 @@ export default function LoginPage() {
         {/* Right Side: Dashboard Preview (occupies 60% width) */}
         <div className="hidden lg:flex flex-col justify-center w-[60%] h-screen relative pl-12 z-10">
           <div className="mb-6 max-w-lg z-20">
-            <h2 className="text-2xl xl:text-3xl font-bold text-foreground/90 tracking-tight leading-tight">
-              Extract and transform YouTube scripts with <span className="bg-clip-text text-transparent bg-linear-to-r from-red-500 via-yellow-400 via-green-400 via-blue-500 to-purple-600">Prismo AI</span>
+            <h2 className="text-xl xl:text-2xl font-semibold text-foreground/90 tracking-tight leading-tight">
+              Extract and transform YouTube transcripts with AI tools
             </h2>
           </div>
           <div className="relative w-full">
             <Image
               src={dashboard}
               alt="Prismo Dashboard Preview"
-              width={1920}
-              height={1080}
+              width={1440}
+              height={900}
               priority
-              className="w-[100%] xl:w-[110%] 2xl:w-[130%] h-auto max-w-none rounded-l-2xl border border-white/10 shadow-[0_0_80px_rgba(0,0,0,0.4)] transition-all duration-300"
+              className="w-[100%] xl:w-[110%] 2xl:w-[120%] h-auto max-w-none rounded-l-2xl border border-white/10 shadow-[0_0_80px_rgba(0,0,0,0.4)] transition-all duration-300"
             />
           </div>
         </div>

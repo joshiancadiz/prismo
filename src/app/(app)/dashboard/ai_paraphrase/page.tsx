@@ -1,5 +1,6 @@
 "use client";
 
+import { mutate } from 'swr';
 import React, { useState, useEffect } from 'react';
 import { Copy, Trash2, ArrowRight, Shuffle } from 'lucide-react';
 import { saveHistory } from '@/lib/supabase/updateHistory';
@@ -73,6 +74,7 @@ export default function AIParaphrasePage() {
                     processedText: data.paraphrasedText,
                     action: "paraphrase",
                 });
+                mutate('history');
             }
         } catch {
             const errMsg = "Error: Failed to connect to the paraphrase service.";
@@ -98,7 +100,7 @@ export default function AIParaphrasePage() {
 
     return (
         <div className="flex-1 p-4 md:p-8 pb-16 md:pb-20 overflow-y-auto h-full text-foreground">
-            <div className="max-w-7xl mx-auto">
+            <div className="max-w-7xl">
                 {/* Header */}
                 <div className="mb-8">
                     <div className="flex items-center gap-3 mb-2">

@@ -1,6 +1,7 @@
 "use client";
- 
-import React, { useEffect, useState } from 'react';
+
+import useSWR from 'swr';
+import React, { useEffect, useState, useMemo } from 'react';
 import { getHistory, HistoryRecord } from '@/lib/supabase/getHistory';
 import HistoryItem from '@/components/historyItem';
 import { ArrowDown, ArrowUp, ChevronDown } from 'lucide-react';
@@ -10,11 +11,11 @@ const FILTER_OPTIONS = ['All', 'Enhance', 'Paraphrase', 'Translate', 'Extract'];
 
 export default function HistoryTable() {
     const searchParams = useSearchParams();
-    const [records, setRecords] = useState<{ id: string; action: string; output: string; date: string; rawDate: number }[]>([]);
     const [actionFilter, setActionFilter] = useState<string>('All');
     const [sortDesc, setSortDesc] = useState<boolean>(true);
-    const [loading, setLoading] = useState(true);
     const [isDropdownOpen, setIsDropdownOpen] = useState(false);
+
+    const { data: history, error, isLoading } = useSWR('history', getHistory);
 
     useEffect(() => {
         const filterParam = searchParams.get('filter');
@@ -26,36 +27,26 @@ export default function HistoryTable() {
         }
     }, [searchParams]);
 
-    useEffect(() => {
-        async function fetchHistory() {
-            setLoading(true);
-            try {
-                const data = await getHistory();
-                const mapped = data.map((record: HistoryRecord) => ({
-                    id: record.id,
-                    action: record.action.charAt(0).toUpperCase() + record.action.slice(1),
-                    output: record.processed_text,
-                    date: new Date(record.created_at).toLocaleDateString('en-US', {
-                        year: 'numeric',
-                        month: 'short',
-                        day: 'numeric',
-                    }) + ', ' + new Date(record.created_at).toLocaleTimeString('en-US', {
-                        hour: 'numeric',
-                        minute: '2-digit',
-                        hour12: true,
-                    }),
-                    rawDate: new Date(record.created_at).getTime(),
-                }));
-                setRecords(mapped);
-            } catch (error) {
-                console.error("Error fetching history:", error);
-            } finally {
-                setLoading(false);
-            }
-        }
+    const records = useMemo(() => {
+        if (!history) return [];
+         return history.map((record: HistoryRecord) => ({
+            id: record.id,
+            action: record.action.charAt(0).toUpperCase() + record.action.slice(1),
+            output: record.processed_text,
+            date: new Date(record.created_at).toLocaleDateString('en-US', {
+                year: 'numeric',
+                month: 'short',
+                day: 'numeric',
+            }) + ', ' + new Date(record.created_at).toLocaleTimeString('en-US', {
+                hour: 'numeric',
+                minute: '2-digit',
+                hour12: true,
+            }),
+            rawDate: new Date(record.created_at).getTime(),
+        }));
+    }, [history]);
 
-        fetchHistory();
-    }, []);
+    const loading = isLoading;
 
     if (loading) {
         return (

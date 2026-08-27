@@ -1,5 +1,6 @@
 "use client";
 
+import { mutate } from 'swr';
 import React, { useState, useEffect } from 'react';
 import { Wand2, Copy, Trash2, ArrowRight } from 'lucide-react';
 import { saveHistory } from '@/lib/supabase/updateHistory';
@@ -57,6 +58,7 @@ export default function AIEnhancePage() {
                     processedText: data.enhancedText,
                     action: "enhance",
                 });
+                mutate('history');
             }
         } catch (error) {
             const errMsg = "Error: Failed to connect to the enhancement service.";
@@ -83,7 +85,7 @@ export default function AIEnhancePage() {
 
     return (
         <div className="flex-1 p-4 md:p-8 pb-16 md:pb-20 overflow-y-auto h-full text-foreground">
-            <div className="max-w-7xl mx-auto">
+            <div className="max-w-7xl">
                 <div className="mb-8">
                     <div className="flex items-center gap-3 mb-2">
                         <h1 className="text-2xl md:text-3xl font-bold text-foreground">Enhance</h1>

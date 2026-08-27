@@ -1,6 +1,7 @@
 "use client";
 
-import React, { useEffect, useState } from 'react';
+import { useMemo } from 'react';
+import useSWR from 'swr';
 import { FileText, Wand2, Shuffle, Languages, Loader2, ChevronRight } from 'lucide-react';
 import { getHistory } from '@/lib/supabase/getHistory';
 import Link from 'next/link';
@@ -27,78 +28,63 @@ function getRelativeTime(dateString: string): string {
     return date.toLocaleDateString(undefined, { month: 'short', day: 'numeric' });
 }
 
-export default function DashboardPage({ params }: { params?: Promise<any> } = {}) {
-    const [counts, setCounts] = useState({
-        extract: 0,
-        enhance: 0,
-        paraphrase: 0,
-        translate: 0
-    });
-    const [lastUsed, setLastUsed] = useState({
-        extract: '',
-        enhance: '',
-        paraphrase: '',
-        translate: ''
-    });
-    const [recentActivities, setRecentActivities] = useState<any[]>([]);
-    const [loading, setLoading] = useState(true);
+export default function DashboardPage() {
+    const { data: history, error, isLoading } = useSWR('history', getHistory);
 
-    useEffect(() => {
-        async function fetchCounts() {
-            setLoading(true);
-            try {
-                const history = await getHistory();
-                const newCounts = {
-                    extract: 0,
-                    enhance: 0,
-                    paraphrase: 0,
-                    translate: 0
-                };
-                const latestRecords = {
-                    extract: null as string | null,
-                    enhance: null as string | null,
-                    paraphrase: null as string | null,
-                    translate: null as string | null,
-                };
-                history.forEach(record => {
-                    if (record.action === 'extract') {
-                        newCounts.extract++;
-                        if (!latestRecords.extract || new Date(record.created_at) > new Date(latestRecords.extract)) {
-                            latestRecords.extract = record.created_at;
-                        }
-                    } else if (record.action === 'enhance') {
-                        newCounts.enhance++;
-                        if (!latestRecords.enhance || new Date(record.created_at) > new Date(latestRecords.enhance)) {
-                            latestRecords.enhance = record.created_at;
-                        }
-                    } else if (record.action === 'paraphrase') {
-                        newCounts.paraphrase++;
-                        if (!latestRecords.paraphrase || new Date(record.created_at) > new Date(latestRecords.paraphrase)) {
-                            latestRecords.paraphrase = record.created_at;
-                        }
-                    } else if (record.action === 'translate') {
-                        newCounts.translate++;
-                        if (!latestRecords.translate || new Date(record.created_at) > new Date(latestRecords.translate)) {
-                            latestRecords.translate = record.created_at;
-                        }
+    const { counts, lastUsed, recentActivities } = useMemo(() => {
+         const newCounts = {
+            extract: 0,
+            enhance: 0,
+            paraphrase: 0,
+            translate: 0
+        };
+        const latestRecords = {
+            extract: null as string | null,
+            enhance: null as string | null,
+            paraphrase: null as string | null,
+            translate: null as string | null,
+        };
+
+        if (history) {
+            history.forEach(record => {
+                if (record.action === 'extract') {
+                    newCounts.extract++;
+                    if (!latestRecords.extract || new Date(record.created_at) > new Date(latestRecords.extract)) {
+                        latestRecords.extract = record.created_at;
                     }
-                });
-                setCounts(newCounts);
-                setLastUsed({
-                    extract: latestRecords.extract ? getRelativeTime(latestRecords.extract) : 'never',
-                    enhance: latestRecords.enhance ? getRelativeTime(latestRecords.enhance) : 'never',
-                    paraphrase: latestRecords.paraphrase ? getRelativeTime(latestRecords.paraphrase) : 'never',
-                    translate: latestRecords.translate ? getRelativeTime(latestRecords.translate) : 'never'
-                });
-                setRecentActivities(history);
-            } catch (err) {
-                console.error(err);
-            } finally {
-                setLoading(false);
-            }
+                } else if (record.action === 'enhance') {
+                    newCounts.enhance++;
+                    if (!latestRecords.enhance || new Date(record.created_at) > new Date(latestRecords.enhance)) {
+                        latestRecords.enhance = record.created_at;
+                    }
+                } else if (record.action === 'paraphrase') {
+                    newCounts.paraphrase++;
+                    if (!latestRecords.paraphrase || new Date(record.created_at) > new Date(latestRecords.paraphrase)) {
+                        latestRecords.paraphrase = record.created_at;
+                    }
+                } else if (record.action === 'translate') {
+                    newCounts.translate++;
+                    if (!latestRecords.translate || new Date(record.created_at) > new Date(latestRecords.translate)) {
+                        latestRecords.translate = record.created_at;
+                    }
+                }
+            });
         }
-        fetchCounts();
-    }, []);
+
+         return {
+            counts: newCounts,
+            lastUsed: {
+                extract: latestRecords.extract ? getRelativeTime(latestRecords.extract) : 'never',
+                enhance: latestRecords.enhance ? getRelativeTime(latestRecords.enhance) : 'never',
+                paraphrase: latestRecords.paraphrase ? getRelativeTime(latestRecords.paraphrase) : 'never',
+                translate: latestRecords.translate ? getRelativeTime(latestRecords.translate) : 'never'
+            },
+            recentActivities: history || []
+        };
+        
+    }, [history]);
+
+    const loading = isLoading;
 
     const stats = [
         { name: 'Extracted Scripts', value: counts.extract.toString(), icon: FileText, color: 'text-blue-500', bg: 'bg-blue-500/10', arrowHref: '/dashboard/history?filter=extract', lastUsed: lastUsed.extract },

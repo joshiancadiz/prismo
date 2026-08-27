@@ -45,10 +45,10 @@ export default function StatCard({
                 {/* Content: Title, Count, Placeholder */}
                 <div className="mt-4 flex-1 flex flex-col justify-between">
                     <div>
-                        <h3 className="text-xs md:text-sm font-semibold tracking-wide text-muted/80">
+                        <h3 className="text-xs md:text-sm font-medium tracking-wide text-muted/80">
                             {title}
                         </h3>
-                        <div className="text-3xl md:text-4xl font-semibold tracking-tight text-foreground mt-2">
+                        <div className="font-mono text-3xl md:text-4xl font-semibold tracking-tight text-foreground mt-2">
                             {loading ? (
                                 <div className="h-9 flex items-center">
                                     <Loader2 className="w-5 h-5 animate-spin text-muted/50" />
@@ -59,7 +59,7 @@ export default function StatCard({
                         </div>
                     </div>
                     
-                    <p className="text-xs text-muted/60 mt-3 font-medium">
+                    <p className="text-xs text-muted/50 mt-3">
                         Last used {lastUsed}
                     </p>
                 </div>

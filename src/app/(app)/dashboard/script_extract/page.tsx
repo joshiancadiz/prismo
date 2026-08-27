@@ -1,12 +1,13 @@
 "use client";
 
+import { mutate } from 'swr';
 import React, { useState, useEffect } from 'react';
 import { Play, Info, CheckCircle2, AlertCircle, Link as LinkIcon, Instagram, Youtube, Clapperboard, Copy, Clock, Check, X } from 'lucide-react';
 // import { extractYoutubeId } from '@/app/lib/youtube/parse';
 import { saveHistory } from '@/lib/supabase/updateHistory';
 import { createClient } from '@/utils/supabase/client';
 
-export default function ScriptExtractPage({ params }: { params: Promise<{}> }) {
+export default function ScriptExtractPage() {
     const [videoUrl, setVideoUrl] = useState('');
     const [error, setError] = useState<string | null>(null);
 
@@ -24,6 +25,7 @@ export default function ScriptExtractPage({ params }: { params: Promise<{}> }) {
             }
         }
     }, []);
+
     const [isLoading, setIsLoading] = useState(false);
     const [videoData, setVideoData] = useState<any | null>(null);
     const [showTimestamps, setShowTimestamps] = useState(true);
@@ -78,6 +80,7 @@ export default function ScriptExtractPage({ params }: { params: Promise<{}> }) {
                     processedText: pureText,
                     action: "extract",
                 });
+                mutate('history');
             }
         } catch (err) {
             console.error('Error calling API:', err);
