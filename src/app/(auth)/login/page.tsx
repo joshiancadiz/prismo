@@ -60,7 +60,7 @@ export default function LoginPage() {
                 className="w-20 h-20 md:w-24 md:h-24 mb-4"
               />
               <h1 className="text-xl md:text-3xl font-extrabold tracking-tight mb-1">
-                Welcome to <span className="bg-clip-text text-transparent bg-linear-to-r from-red-500 via-yellow-400 via-green-400 via-blue-500 to-purple-600">Prismo AI</span>
+                Welcome to <span className="animate-prismo">Prismo AI</span>
               </h1>
               <p className="text-sm text-muted mt-2">
                 Sign in to continue to your dashboard
@@ -118,7 +118,7 @@ export default function LoginPage() {
               width={1440}
               height={900}
               priority
-              className="w-[100%] xl:w-[110%] 2xl:w-[120%] h-auto max-w-none rounded-l-2xl border border-white/10 shadow-[0_0_80px_rgba(0,0,0,0.4)] transition-all duration-300"
+              className="w-[100%]  2xl:w-[120%] h-auto max-w-none rounded-l-2xl border border-white/10 shadow-[0_0_80px_rgba(0,0,0,0.4)] transition-all duration-300"
             />
           </div>
         </div>

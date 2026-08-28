@@ -156,24 +156,24 @@ export default function DashboardPage() {
                             <div className="overflow-x-auto">
                                 <table className="w-full text-left border-collapse">
                                     <thead>
-                                        <tr className="bg-foreground/5 border-b border-border text-[10px] font-bold uppercase tracking-widest text-muted">
-                                            <th className="px-4 py-3">Action</th>
-                                            <th className="px-4 py-3">Text</th>
-                                            <th className="px-4 py-3 text-right">Date</th>
+                                        <tr className="bg-foreground/0 border-b border-border text-[10px] font-bold uppercase tracking-widest text-muted">
+                                            <th className="pl-4 pr-0 py-3">Action</th>
+                                            <th className="pl-6 pr-4 py-3 w-full">Text</th>
+                                            <th className="px-4 py-3 text-left">Date</th>
                                         </tr>
                                     </thead>
                                     <tbody className="divide-y divide-border">
                                         {loading ? (
-                                            [...Array(4)].map((_, i) => (
-                                                <tr key={i} className="animate-pulse">
-                                                    <td className="px-4 py-4">
+                                            [...Array(5)].map((_, i) => (
+                                                <tr key={i} className="animate-pulse h-[55px]">
+                                                    <td className="pl-4 pr-0 py-3">
                                                         <div className="h-4 w-16 bg-foreground/10 rounded" />
                                                     </td>
-                                                    <td className="px-4 py-4">
-                                                        <div className="h-4 w-48 bg-foreground/10 rounded" />
+                                                    <td className="pl-6 pr-4 py-3 w-full max-w-0">
+                                                        <div className="h-4 w-4/5 bg-foreground/10 rounded" />
                                                     </td>
-                                                    <td className="px-4 py-4 text-right">
-                                                        <div className="h-4 w-12 bg-foreground/10 rounded ml-auto" />
+                                                    <td className="px-4 py-3 text-left">
+                                                        <div className="h-4 w-12 bg-foreground/10 rounded mr-auto" />
                                                     </td>
                                                 </tr>
                                             ))
@@ -185,21 +185,21 @@ export default function DashboardPage() {
                                             </tr>
                                         ) : (
                                             recentActivities.slice(0, 5).map((activity) => (
-                                                <tr key={activity.id} className="hover:bg-foreground/[0.01] transition-colors">
-                                                    <td className="px-4 py-3 text-xs font-semibold">
-                                                        <span className={`inline-flex items-center px-2 py-0.5 rounded-full text-[9px] font-bold uppercase tracking-wider ${
-                                                            activity.action === 'extract' ? 'bg-blue-500/10 text-blue-500' :
-                                                            activity.action === 'enhance' ? 'bg-purple-500/10 text-purple-500' :
-                                                            activity.action === 'paraphrase' ? 'bg-green-500/10 text-green-500' :
-                                                            'bg-orange-500/10 text-orange-500'
+                                                <tr key={activity.id} className="hover:bg-foreground/[0.01] transition-colors h-[55px]">
+                                                    <td className="pl-4 pr-0 py-3 text-xs font-semibold">
+                                                        <span className={`text-[9px] font-bold uppercase tracking-wider ${
+                                                            activity.action === 'extract' ? 'text-blue-500' :
+                                                            activity.action === 'enhance' ? 'text-purple-500' :
+                                                            activity.action === 'paraphrase' ? 'text-green-500' :
+                                                            'text-orange-500'
                                                         }`}>
                                                             {activity.action}
                                                         </span>
                                                     </td>
-                                                    <td className="px-4 py-3 text-xs text-foreground/80 max-w-[150px] sm:max-w-[250px] truncate">
+                                                    <td className="pl-6 pr-4 py-3 text-xs text-foreground/80 w-full max-w-0 truncate">
                                                         {activity.processed_text || activity.original_text}
                                                     </td>
-                                                    <td className="px-4 py-3 text-xs text-muted text-right whitespace-nowrap">
+                                                    <td className="px-4 py-3 text-xs text-muted text-left whitespace-nowrap">
                                                         {getRelativeTime(activity.created_at)}
                                                     </td>
                                                 </tr>

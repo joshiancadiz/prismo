@@ -30,12 +30,12 @@ export default async function SettingsPage() {
                         </div>
                     </div>
 
-                    <div className="flex flex-col space-y-4">
+                    {/* <div className="flex flex-col space-y-4">
                         <h2 className="text-sm font-semibold text-muted uppercase tracking-wider ml-1">Preference</h2>
                         <div className="ml-1 pt-2">
                             <ThemeToggle />
                         </div>
-                    </div>
+                    </div> */}
                 </div>
             </div>
         </div>

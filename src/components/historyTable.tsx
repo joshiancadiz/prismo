@@ -86,7 +86,7 @@ export default function HistoryTable() {
     return (
         <div className="w-full bg-card rounded-[15px] border border-border shadow-2xl backdrop-blur-sm overflow-x-auto">
             <table className="w-full text-left border-collapse">
-                <thead className="bg-foreground/5 border-b border-border overflow-visible rounded-t-[15px]">
+                <thead className="bg-foreground/0 border-b border-border overflow-visible rounded-t-[15px]">
                     <tr className="overflow-visible">
                         <th className="w-px whitespace-nowrap px-6 py-5 text-xs font-bold text-muted uppercase tracking-widest relative overflow-visible rounded-tl-[15px]">
                             <div className="relative">

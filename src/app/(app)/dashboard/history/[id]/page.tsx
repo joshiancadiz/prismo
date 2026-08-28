@@ -1,5 +1,6 @@
 "use client";
 
+import useSWR from 'swr';
 import React, { useEffect, useState, use } from 'react';
 import { useRouter } from 'next/navigation';
 import { getHistoryById, HistoryRecord } from '@/lib/supabase/getHistory';
@@ -8,27 +9,17 @@ import { ArrowLeft, Calendar, Copy } from 'lucide-react';
 export default function HistoryDetailPage({ params }: { params: Promise<{ id: string }> }) {
     const { id } = use(params);
     const router = useRouter();
-    const [record, setRecord] = useState<HistoryRecord | null>(null);
-    const [loading, setLoading] = useState(true);
 
-    useEffect(() => {
-        if (!id) return;
+     const { data: record, error, isLoading } = useSWR(
+        id ? ['history', id] : null,
+        () => getHistoryById(id)
+    );
 
-        async function fetchRecord() {
-            setLoading(true);
-            const data = await getHistoryById(id);
-            setRecord(data);
-            setLoading(false);
-        }
-
-        fetchRecord();
-    }, [id]);
-
-    const handleCopy = (text: string) => {
+     const handleCopy = (text: string) => {
         navigator.clipboard.writeText(text);
     };
 
-    if (loading) {
+    if (isLoading) {
         return (
             <div className="flex-1 p-4 md:p-8 text-foreground flex items-center justify-center">
                 <div className="w-8 h-8 border-2 border-blue-500/30 border-t-blue-500 rounded-full animate-spin" />
@@ -49,8 +40,6 @@ export default function HistoryDetailPage({ params }: { params: Promise<{ id: st
             </div>
         );
     }
-
-
 
     return (
         <div className="flex-1 p-4 md:p-8 overflow-y-auto h-full text-foreground">

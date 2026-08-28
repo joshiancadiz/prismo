@@ -1,0 +1,27 @@
+<svg width="680" height="160" viewBox="0 0 680 160" xmlns="http://www.w3.org/2000/svg">
+  <defs>
+    <linearGradient id="prismoGrad" x1="0%" y1="0%" x2="100%" y2="0%" gradientUnits="objectBoundingBox">
+      <stop offset="0%">
+        <animate attributeName="stop-color"
+          values="#ff0000;#ff7f00;#ffff00;#00ff00;#00ffff;#0000ff;#8b00ff;#ff0000"
+          dur="12s" repeatCount="indefinite"/>
+      </stop>
+      <stop offset="50%">
+        <animate attributeName="stop-color"
+          values="#ff7f00;#ffff00;#00ff00;#00ffff;#0000ff;#8b00ff;#ff0000;#ff7f00"
+          dur="12s" repeatCount="indefinite"/>
+      </stop>
+      <stop offset="100%">
+        <animate attributeName="stop-color"
+          values="#ffff00;#00ff00;#00ffff;#0000ff;#8b00ff;#ff0000;#ff7f00;#ffff00"
+          dur="12s" repeatCount="indefinite"/>
+      </stop>
+      <animateTransform attributeName="gradientTransform"
+        type="rotate" from="0 0.5 0.5" to="360 0.5 0.5"
+        dur="40s" repeatCount="indefinite"/>
+    </linearGradient>
+  </defs>
+  <text x="340" y="95" text-anchor="middle"
+        font-family="Inter, sans-serif" font-weight="800" font-size="64"
+        fill="url(#prismoGrad)">Prismo AI</text>
+</svg>
